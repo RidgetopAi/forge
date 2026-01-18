@@ -17,7 +17,10 @@ export async function runLoop(
   stateManager: StateManager
 ): Promise<void> {
   const spindlesClient = new SpindlesClient(config.spindlesProxyUrl);
-  const claudeRunner = new ClaudeRunner(config.spindlesProxyUrl, config.project);
+  const claudeRunner = new ClaudeRunner({
+    spindlesProxyUrl: config.spindlesProxyUrl,
+    mandrelUrl: config.mandrelUrl
+  });
   const timeoutMs = config.timeoutMinutes * 60 * 1000;
   
   const runStarted: RunStartedEvent = {

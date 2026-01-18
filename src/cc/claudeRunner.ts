@@ -6,33 +6,35 @@ export interface RunResult {
   exitCode: number | null;
 }
 
+export interface ClaudeRunnerConfig {
+  spindlesProxyUrl: string;
+  mandrelUrl: string;
+}
+
 export class ClaudeRunner {
-  private spindlesProxyUrl: string;
-  private project: string;
-  
-  constructor(spindlesProxyUrl: string, project: string) {
-    this.spindlesProxyUrl = spindlesProxyUrl;
-    this.project = project;
+  private config: ClaudeRunnerConfig;
+
+  constructor(config: ClaudeRunnerConfig) {
+    this.config = config;
   }
-  
+
   async run(prompt: string, timeoutMs: number): Promise<RunResult> {
     return new Promise((resolve) => {
       let stdout = '';
       let stderr = '';
       let killed = false;
       let timeoutHandle: ReturnType<typeof setTimeout> | null = null;
-      
+
       console.error(`[forge] Spawning Claude Code with timeout ${timeoutMs}ms`);
-      
+
       const env = {
         ...process.env,
-        ANTHROPIC_BASE_URL: this.spindlesProxyUrl
+        ANTHROPIC_BASE_URL: this.config.spindlesProxyUrl
       };
-      
+
       const child: ChildProcess = spawn('claude', [
         '--print',
         '--dangerously-skip-permissions',
-        '-p', this.project,
         prompt
       ], {
         env,
