@@ -1,0 +1,349 @@
+{
+  "version": 1,
+  "projectPath": "/home/ridgetop/projects/forge",
+  "entries": {
+    "file:spindles-proxy/src/session/sessionStore.ts:fn:clear:13": {
+      "contentHash": "c693012afe18d710",
+      "result": {
+        "summary": "Clears the current session by setting it to null.",
+        "flags": {
+          "databaseRead": false,
+          "databaseWrite": false,
+          "httpCall": false,
+          "fileRead": false,
+          "fileWrite": false,
+          "sendsNotification": false,
+          "modifiesGlobalState": true,
+          "hasSideEffects": true
+        },
+        "rawResponse": "{\"summary\":\"Clears the current session by setting it to null.\",\"flags\":{\"databaseRead\":false,\"databaseWrite\":false,\"httpCall\":false,\"fileRead\":false,\"fileWrite\":false,\"sendsNotification\":false,\"modifiesGlobalState\":true,\"hasSideEffects\":true}}"
+      },
+      "analyzedAt": "2026-01-18T13:33:01.539Z",
+      "model": "grok-4-1-fast-reasoning"
+    },
+    "file:spindles-proxy/src/session/sessionStore.ts:fn:setCurrent:9": {
+      "contentHash": "1cab85a3c0928845",
+      "result": {
+        "summary": "Sets the current session to the provided SirkSession object.",
+        "flags": {
+          "databaseRead": false,
+          "databaseWrite": false,
+          "httpCall": false,
+          "fileRead": false,
+          "fileWrite": false,
+          "sendsNotification": false,
+          "modifiesGlobalState": true,
+          "hasSideEffects": true
+        },
+        "rawResponse": "{\"summary\":\"Sets the current session to the provided SirkSession object.\",\"flags\":{\"databaseRead\":false,\"databaseWrite\":false,\"httpCall\":false,\"fileRead\":false,\"fileWrite\":false,\"sendsNotification\":false,\"modifiesGlobalState\":true,\"hasSideEffects\":true}}"
+      },
+      "analyzedAt": "2026-01-18T13:33:01.969Z",
+      "model": "grok-4-1-fast-reasoning"
+    },
+    "file:src/config.ts:fn:parseConfig:19": {
+      "contentHash": "f82b31fabbdd37fa",
+      "result": {
+        "summary": "Parses JSON input and validates against ForgeConfigSchema, returning ParseResult.",
+        "flags": {
+          "databaseRead": false,
+          "databaseWrite": false,
+          "httpCall": false,
+          "fileRead": false,
+          "fileWrite": false,
+          "sendsNotification": false,
+          "modifiesGlobalState": false,
+          "hasSideEffects": false
+        },
+        "rawResponse": "{\"summary\":\"Parses JSON input and validates against ForgeConfigSchema, returning ParseResult.\",\"flags\":{\"databaseRead\":false,\"databaseWrite\":false,\"httpCall\":false,\"fileRead\":false,\"fileWrite\":false,\"sendsNotification\":false,\"modifiesGlobalState\":false,\"hasSideEffects\":false}}"
+      },
+      "analyzedAt": "2026-01-18T13:33:02.011Z",
+      "model": "grok-4-1-fast-reasoning"
+    },
+    "file:spindles-proxy/src/session/sessionStore.ts:fn:getCurrent:5": {
+      "contentHash": "6f80d48ceb7facd1",
+      "result": {
+        "summary": "Returns the current session or null.",
+        "flags": {
+          "databaseRead": false,
+          "databaseWrite": false,
+          "httpCall": false,
+          "fileRead": false,
+          "fileWrite": false,
+          "sendsNotification": false,
+          "modifiesGlobalState": false,
+          "hasSideEffects": false
+        },
+        "rawResponse": "{\"summary\":\"Returns the current session or null.\",\"flags\":{\"databaseRead\":false,\"databaseWrite\":false,\"httpCall\":false,\"fileRead\":false,\"fileWrite\":false,\"sendsNotification\":false,\"modifiesGlobalState\":false,\"hasSideEffects\":false}}"
+      },
+      "analyzedAt": "2026-01-18T13:33:02.227Z",
+      "model": "grok-4-1-fast-reasoning"
+    },
+    "file:spindles-proxy/src/session/sessionStore.ts:fn:snapshot:17": {
+      "contentHash": "296dfe9beb0eb60d",
+      "result": {
+        "summary": "Returns a shallow copy of the current session or null if none exists.",
+        "flags": {
+          "databaseRead": false,
+          "databaseWrite": false,
+          "httpCall": false,
+          "fileRead": false,
+          "fileWrite": false,
+          "sendsNotification": false,
+          "modifiesGlobalState": false,
+          "hasSideEffects": false
+        },
+        "rawResponse": "{\"summary\":\"Returns a shallow copy of the current session or null if none exists.\",\"flags\":{\"databaseRead\":false,\"databaseWrite\":false,\"httpCall\":false,\"fileRead\":false,\"fileWrite\":false,\"sendsNotification\":false,\"modifiesGlobalState\":false,\"hasSideEffects\":false}}"
+      },
+      "analyzedAt": "2026-01-18T13:33:02.674Z",
+      "model": "grok-4-1-fast-reasoning"
+    },
+    "file:src/orchestrator/resumeFlow.ts:fn:setStateManager:11": {
+      "contentHash": "4d5b18acdee76745",
+      "result": {
+        "summary": "Sets the current state manager to the provided instance.",
+        "flags": {
+          "databaseRead": false,
+          "databaseWrite": false,
+          "httpCall": false,
+          "fileRead": false,
+          "fileWrite": false,
+          "sendsNotification": false,
+          "modifiesGlobalState": true,
+          "hasSideEffects": true
+        },
+        "rawResponse": "{\"summary\":\"Sets the current state manager to the provided instance.\",\"flags\":{\"databaseRead\":false,\"databaseWrite\":false,\"httpCall\":false,\"fileRead\":false,\"fileWrite\":false,\"sendsNotification\":false,\"modifiesGlobalState\":true,\"hasSideEffects\":true}}"
+      },
+      "analyzedAt": "2026-01-18T13:33:02.802Z",
+      "model": "grok-4-1-fast-reasoning"
+    },
+    "file:src/events.ts:fn:emitEvent:56": {
+      "contentHash": "bc8ec5e51608eead",
+      "result": {
+        "summary": "Writes JSON-stringified ForgeEvent to stdout followed by newline.",
+        "flags": {
+          "databaseRead": false,
+          "databaseWrite": false,
+          "httpCall": false,
+          "fileRead": false,
+          "fileWrite": false,
+          "sendsNotification": false,
+          "modifiesGlobalState": false,
+          "hasSideEffects": true
+        },
+        "rawResponse": "{\"summary\":\"Writes JSON-stringified ForgeEvent to stdout followed by newline.\",\"flags\":{\"databaseRead\":false,\"databaseWrite\":false,\"httpCall\":false,\"fileRead\":false,\"fileWrite\":false,\"sendsNotification\":false,\"modifiesGlobalState\":false,\"hasSideEffects\":true}}"
+      },
+      "analyzedAt": "2026-01-18T13:33:02.829Z",
+      "model": "grok-4-1-fast-reasoning"
+    },
+    "file:src/cc/prompt.ts:fn:renderPrompt:29": {
+      "contentHash": "f8c5ca727eecc841",
+      "result": {
+        "summary": "Renders prompt template by reading seed file and replacing placeholders with config values.",
+        "flags": {
+          "databaseRead": false,
+          "databaseWrite": false,
+          "httpCall": false,
+          "fileRead": true,
+          "fileWrite": false,
+          "sendsNotification": false,
+          "modifiesGlobalState": false,
+          "hasSideEffects": true
+        },
+        "rawResponse": "{\n  \"summary\": \"Renders prompt template by reading seed file and replacing placeholders with config values.\",\n  \"flags\": {\n    \"databaseRead\": false,\n    \"databaseWrite\": false,\n    \"httpCall\": false,\n    \"fileRead\": true,\n    \"fileWrite\": false,\n    \"sendsNotification\": false,\n    \"modifiesGlobalState\": false,\n    \"hasSideEffects\": true\n  }\n}"
+      },
+      "analyzedAt": "2026-01-18T13:33:03.724Z",
+      "model": "grok-4-1-fast-reasoning"
+    },
+    "file:src/orchestrator/resumeFlow.ts:fn:pauseRun:15": {
+      "contentHash": "4d457025e302cb31",
+      "result": {
+        "summary": "Sets pause flag, updates and saves current state manager status to 'paused'.",
+        "flags": {
+          "databaseRead": true,
+          "databaseWrite": true,
+          "httpCall": false,
+          "fileRead": false,
+          "fileWrite": false,
+          "sendsNotification": false,
+          "modifiesGlobalState": true,
+          "hasSideEffects": true
+        },
+        "rawResponse": "{\"summary\":\"Sets pause flag, updates and saves current state manager status to 'paused'.\",\"flags\":{\"databaseRead\":true,\"databaseWrite\":true,\"httpCall\":false,\"fileRead\":false,\"fileWrite\":false,\"sendsNotification\":false,\"modifiesGlobalState\":true,\"hasSideEffects\":true}}"
+      },
+      "analyzedAt": "2026-01-18T13:33:04.681Z",
+      "model": "grok-4-1-fast-reasoning"
+    },
+    "file:spindles-proxy/src/proxy/proxyServer.ts:fn:createProxyApp:4": {
+      "contentHash": "eadba65ecec0f2f2",
+      "result": {
+        "summary": "Creates an Express app and configures a proxy route for /v1/* paths.",
+        "flags": {
+          "databaseRead": false,
+          "databaseWrite": false,
+          "httpCall": false,
+          "fileRead": false,
+          "fileWrite": false,
+          "sendsNotification": false,
+          "modifiesGlobalState": false,
+          "hasSideEffects": false
+        },
+        "rawResponse": "{\"summary\":\"Creates an Express app and configures a proxy route for /v1/* paths.\",\"flags\":{\"databaseRead\":false,\"databaseWrite\":false,\"httpCall\":false,\"fileRead\":false,\"fileWrite\":false,\"sendsNotification\":false,\"modifiesGlobalState\":false,\"hasSideEffects\":false}}"
+      },
+      "analyzedAt": "2026-01-18T13:33:04.728Z",
+      "model": "grok-4-1-fast-reasoning"
+    },
+    "file:spindles-proxy/src/proxy/requestTap.ts:fn:extractToolResults:19": {
+      "contentHash": "9a44b76df16f4c65",
+      "result": {
+        "summary": "Extracts tool result activities from JSON request body messages",
+        "flags": {
+          "databaseRead": false,
+          "databaseWrite": false,
+          "httpCall": false,
+          "fileRead": false,
+          "fileWrite": false,
+          "sendsNotification": false,
+          "modifiesGlobalState": false,
+          "hasSideEffects": false
+        },
+        "rawResponse": "{\"summary\":\"Extracts tool result activities from JSON request body messages\",\"flags\":{\"databaseRead\":false,\"databaseWrite\":false,\"httpCall\":false,\"fileRead\":false,\"fileWrite\":false,\"sendsNotification\":false,\"modifiesGlobalState\":false,\"hasSideEffects\":false}}"
+      },
+      "analyzedAt": "2026-01-18T13:33:04.782Z",
+      "model": "grok-4-1-fast-reasoning"
+    },
+    "file:src/orchestrator/resumeFlow.ts:fn:resumeRun:28": {
+      "contentHash": "e666e45503b9be57",
+      "result": {
+        "summary": "Loads saved state for a run via StateManager and returns it if not completed, with status logging",
+        "flags": {
+          "databaseRead": false,
+          "databaseWrite": false,
+          "httpCall": false,
+          "fileRead": false,
+          "fileWrite": false,
+          "sendsNotification": false,
+          "modifiesGlobalState": false,
+          "hasSideEffects": true
+        },
+        "rawResponse": "{\n  \"summary\": \"Loads saved state for a run via StateManager and returns it if not completed, with status logging\",\n  \"flags\": {\n    \"databaseRead\": false,\n    \"databaseWrite\": false,\n    \"httpCall\": false,\n    \"fileRead\": false,\n    \"fileWrite\": false,\n    \"sendsNotification\": false,\n    \"modifiesGlobalState\": false,\n    \"hasSideEffects\": true\n  }\n}"
+      },
+      "analyzedAt": "2026-01-18T13:33:05.538Z",
+      "model": "grok-4-1-fast-reasoning"
+    },
+    "file:src/orchestrator/resumeFlow.ts:fn:isPauseRequested:7": {
+      "contentHash": "990a6dec8f5bd439",
+      "result": {
+        "summary": "Returns the value of the pauseRequested variable.",
+        "flags": {
+          "databaseRead": false,
+          "databaseWrite": false,
+          "httpCall": false,
+          "fileRead": false,
+          "fileWrite": false,
+          "sendsNotification": false,
+          "modifiesGlobalState": false,
+          "hasSideEffects": false
+        },
+        "rawResponse": "{\"summary\":\"Returns the value of the pauseRequested variable.\",\"flags\":{\"databaseRead\":false,\"databaseWrite\":false,\"httpCall\":false,\"fileRead\":false,\"fileWrite\":false,\"sendsNotification\":false,\"modifiesGlobalState\":false,\"hasSideEffects\":false}}"
+      },
+      "analyzedAt": "2026-01-18T13:33:05.778Z",
+      "model": "grok-4-1-fast-reasoning"
+    },
+    "file:spindles-proxy/src/proxy/anthropicProxyRoute.ts:fn:anthropicProxyRoute:9": {
+      "contentHash": "48f9d48baef1410a",
+      "result": {
+        "summary": "Proxies requests to Anthropic API, extracts/broadcasts tool results, streams response with SSE tap.",
+        "flags": {
+          "databaseRead": false,
+          "databaseWrite": false,
+          "httpCall": true,
+          "fileRead": false,
+          "fileWrite": false,
+          "sendsNotification": false,
+          "modifiesGlobalState": true,
+          "hasSideEffects": true
+        },
+        "rawResponse": "{\n  \"summary\": \"Proxies requests to Anthropic API, extracts/broadcasts tool results, streams response with SSE tap.\",\n  \"flags\": {\n    \"databaseRead\": false,\n    \"databaseWrite\": false,\n    \"httpCall\": true,\n    \"fileRead\": false,\n    \"fileWrite\": false,\n    \"sendsNotification\": false,\n    \"modifiesGlobalState\": true,\n    \"hasSideEffects\": true\n  }\n}"
+      },
+      "analyzedAt": "2026-01-18T13:33:07.045Z",
+      "model": "grok-4-1-fast-reasoning"
+    },
+    "file:src/orchestrator/runLoop.ts:fn:runLoop:15": {
+      "contentHash": "ab89cb9260844518",
+      "result": {
+        "summary": "Orchestrates loop over instances: emits events, sets sessions, runs prompts via ClaudeRunner with retries",
+        "flags": {
+          "databaseRead": false,
+          "databaseWrite": false,
+          "httpCall": true,
+          "fileRead": false,
+          "fileWrite": false,
+          "sendsNotification": false,
+          "modifiesGlobalState": false,
+          "hasSideEffects": true
+        },
+        "rawResponse": "{\"summary\":\"Orchestrates loop over instances: emits events, sets sessions, runs prompts via ClaudeRunner with retries\",\"flags\":{\"databaseRead\":false,\"databaseWrite\":false,\"httpCall\":true,\"fileRead\":false,\"fileWrite\":false,\"sendsNotification\":false,\"modifiesGlobalState\":false,\"hasSideEffects\":true}}"
+      },
+      "analyzedAt": "2026-01-18T13:33:08.676Z",
+      "model": "grok-4-1-fast-reasoning"
+    },
+    "file:src/orchestrator/resumeFlow.ts:fn:setupSignalHandlers:53": {
+      "contentHash": "3d70aa91e2785251",
+      "result": {
+        "summary": "Sets up SIGINT/SIGTERM handlers to pause run, emit event, and exit process.",
+        "flags": {
+          "databaseRead": false,
+          "databaseWrite": false,
+          "httpCall": false,
+          "fileRead": false,
+          "fileWrite": false,
+          "sendsNotification": false,
+          "modifiesGlobalState": true,
+          "hasSideEffects": true
+        },
+        "rawResponse": "{\"summary\":\"Sets up SIGINT/SIGTERM handlers to pause run, emit event, and exit process.\",\"flags\":{\"databaseRead\":false,\"databaseWrite\":false,\"httpCall\":false,\"fileRead\":false,\"fileWrite\":false,\"sendsNotification\":false,\"modifiesGlobalState\":true,\"hasSideEffects\":true}}"
+      },
+      "analyzedAt": "2026-01-18T13:33:09.231Z",
+      "model": "grok-4-1-fast-reasoning"
+    },
+    "file:src/index.ts:fn:main:8": {
+      "contentHash": "21c497ef6406e423",
+      "result": {
+        "summary": "Reads config from stdin, validates it, logs info, creates Mandrel client, and checks its health.",
+        "flags": {
+          "databaseRead": false,
+          "databaseWrite": false,
+          "httpCall": true,
+          "fileRead": false,
+          "fileWrite": false,
+          "sendsNotification": false,
+          "modifiesGlobalState": true,
+          "hasSideEffects": true
+        },
+        "rawResponse": "{\"summary\":\"Reads config from stdin, validates it, logs info, creates Mandrel client, and checks its health.\",\"flags\":{\"databaseRead\":false,\"databaseWrite\":false,\"httpCall\":true,\"fileRead\":false,\"fileWrite\":false,\"sendsNotification\":false,\"modifiesGlobalState\":true,\"hasSideEffects\":true}}"
+      },
+      "analyzedAt": "2026-01-18T13:33:09.452Z",
+      "model": "grok-4-1-fast-reasoning"
+    },
+    "file:spindles-proxy/src/ws/wsServer.ts:fn:createWebSocketServer:5": {
+      "contentHash": "460e013e4fd515c5",
+      "result": {
+        "summary": "Creates a WebSocketServer instance, configures event handlers, and starts listening on a port.",
+        "flags": {
+          "databaseRead": false,
+          "databaseWrite": false,
+          "httpCall": false,
+          "fileRead": false,
+          "fileWrite": false,
+          "sendsNotification": false,
+          "modifiesGlobalState": true,
+          "hasSideEffects": true
+        },
+        "rawResponse": "{\"summary\":\"Creates a WebSocketServer instance, configures event handlers, and starts listening on a port.\",\"flags\":{\"databaseRead\":false,\"databaseWrite\":false,\"httpCall\":false,\"fileRead\":false,\"fileWrite\":false,\"sendsNotification\":false,\"modifiesGlobalState\":true,\"hasSideEffects\":true}}"
+      },
+      "analyzedAt": "2026-01-18T13:33:10.014Z",
+      "model": "grok-4-1-fast-reasoning"
+    }
+  },
+  "updatedAt": "2026-01-18T13:33:10.014Z"
+}

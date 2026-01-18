@@ -1,0 +1,4247 @@
+{
+  "id": "ff5b6fe0-6ce1-496b-b869-1905ea92c70f",
+  "projectPath": "/home/ridgetop/projects/forge",
+  "projectName": "forge",
+  "status": "complete",
+  "createdAt": "2026-01-18T13:32:58.390Z",
+  "completedAt": "2026-01-18T13:32:59.590Z",
+  "stats": {
+    "totalFiles": 31,
+    "totalFunctions": 51,
+    "totalClasses": 9,
+    "totalConnections": 0,
+    "totalWarnings": 5,
+    "warningsByLevel": {
+      "info": 5,
+      "warning": 0,
+      "error": 0
+    },
+    "nodesByType": {
+      "file": 31,
+      "function": 51,
+      "class": 9,
+      "cluster": 0
+    },
+    "analyzedCount": 18,
+    "pendingAnalysis": 33
+  },
+  "nodes": {
+    "file:src/config.ts": {
+      "id": "file:src/config.ts",
+      "type": "file",
+      "name": "config.ts",
+      "filePath": "src/config.ts",
+      "line": 1,
+      "endLine": 39,
+      "imports": [
+        {
+          "source": "zod",
+          "items": [
+            {
+              "name": "z",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": false
+        }
+      ],
+      "exports": [
+        {
+          "name": "parseConfig",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": false,
+          "kind": "function"
+        },
+        {
+          "name": "ForgeConfigSchema",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": false,
+          "kind": "variable"
+        },
+        {
+          "name": "ForgeConfig",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "type"
+        },
+        {
+          "name": "ParseResult",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "type"
+        }
+      ],
+      "functions": [
+        "file:src/config.ts:fn:parseConfig:19"
+      ],
+      "classes": [],
+      "topLevelReferences": []
+    },
+    "file:src/config.ts:fn:parseConfig:19": {
+      "id": "file:src/config.ts:fn:parseConfig:19",
+      "type": "function",
+      "name": "parseConfig",
+      "filePath": "/home/ridgetop/projects/forge/src/config.ts",
+      "line": 19,
+      "endLine": 38,
+      "parentFileId": "file:src/config.ts",
+      "parentClassId": null,
+      "params": [
+        {
+          "name": "input",
+          "type": "string",
+          "isOptional": false,
+          "defaultValue": null
+        }
+      ],
+      "returnType": "import(\"/home/ridgetop/projects/forge/src/config\").ParseResult<{ runName?: string; totalInstances?: number; project?: string; seedPath?: string; spindlesProxyUrl?: string; mandrelUrl?: string; timeoutMinutes?: number; }>",
+      "isExported": true,
+      "isAsync": false,
+      "behavioral": {
+        "summary": "Parses JSON input and validates against ForgeConfigSchema, returning ParseResult.",
+        "source": "ai",
+        "analyzedAt": "2026-01-18T13:33:02.011Z",
+        "flags": {
+          "databaseRead": false,
+          "databaseWrite": false,
+          "httpCall": false,
+          "fileRead": false,
+          "fileWrite": false,
+          "sendsNotification": false,
+          "modifiesGlobalState": false,
+          "hasSideEffects": false
+        }
+      },
+      "source": "export function parseConfig(input: string): ParseResult<ForgeConfig> {\n  let parsed: unknown;\n  \n  try {\n    parsed = JSON.parse(input);\n  } catch {\n    return { success: false, error: 'Invalid JSON input' };\n  }\n  \n  const result = ForgeConfigSchema.safeParse(parsed);\n  \n  if (!result.success) {\n    const issues = result.error.issues\n      .map(i => `${i.path.join('.')}: ${i.message}`)\n      .join('; ');\n    return { success: false, error: issues };\n  }\n  \n  return { success: true, data: result.data };\n}",
+      "references": [
+        "parsed",
+        "JSON",
+        "ForgeConfigSchema",
+        "result",
+        "i",
+        "issues"
+      ]
+    },
+    "file:src/events.ts": {
+      "id": "file:src/events.ts",
+      "type": "file",
+      "name": "events.ts",
+      "filePath": "src/events.ts",
+      "line": 1,
+      "endLine": 59,
+      "imports": [],
+      "exports": [
+        {
+          "name": "emitEvent",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": false,
+          "kind": "function"
+        },
+        {
+          "name": "RunStartedEvent",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "interface"
+        },
+        {
+          "name": "InstanceStartedEvent",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "interface"
+        },
+        {
+          "name": "InstanceCompletedEvent",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "interface"
+        },
+        {
+          "name": "InstanceFailedEvent",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "interface"
+        },
+        {
+          "name": "RunCompletedEvent",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "interface"
+        },
+        {
+          "name": "ErrorEvent",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "interface"
+        },
+        {
+          "name": "ForgeEvent",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "type"
+        }
+      ],
+      "functions": [
+        "file:src/events.ts:fn:emitEvent:56"
+      ],
+      "classes": [],
+      "topLevelReferences": []
+    },
+    "file:src/events.ts:fn:emitEvent:56": {
+      "id": "file:src/events.ts:fn:emitEvent:56",
+      "type": "function",
+      "name": "emitEvent",
+      "filePath": "/home/ridgetop/projects/forge/src/events.ts",
+      "line": 56,
+      "endLine": 58,
+      "parentFileId": "file:src/events.ts",
+      "parentClassId": null,
+      "params": [
+        {
+          "name": "event",
+          "type": "import(\"/home/ridgetop/projects/forge/src/events\").ForgeEvent",
+          "isOptional": false,
+          "defaultValue": null
+        }
+      ],
+      "returnType": "void",
+      "isExported": true,
+      "isAsync": false,
+      "behavioral": {
+        "summary": "Writes JSON-stringified ForgeEvent to stdout followed by newline.",
+        "source": "ai",
+        "analyzedAt": "2026-01-18T13:33:02.829Z",
+        "flags": {
+          "databaseRead": false,
+          "databaseWrite": false,
+          "httpCall": false,
+          "fileRead": false,
+          "fileWrite": false,
+          "sendsNotification": false,
+          "modifiesGlobalState": false,
+          "hasSideEffects": true
+        }
+      },
+      "source": "export function emitEvent(event: ForgeEvent): void {\n  process.stdout.write(JSON.stringify(event) + '\\n');\n}",
+      "references": [
+        "process",
+        "JSON"
+      ]
+    },
+    "file:src/index.ts": {
+      "id": "file:src/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "src/index.ts",
+      "line": 1,
+      "endLine": 107,
+      "imports": [
+        {
+          "source": "./config.js",
+          "items": [
+            {
+              "name": "parseConfig",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": false
+        },
+        {
+          "source": "./events.js",
+          "items": [
+            {
+              "name": "emitEvent",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            },
+            {
+              "name": "ErrorEvent",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": false
+        },
+        {
+          "source": "./mandrel/mandrelClient.js",
+          "items": [
+            {
+              "name": "MandrelClient",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": false
+        },
+        {
+          "source": "./state/stateManager.js",
+          "items": [
+            {
+              "name": "StateManager",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": false
+        },
+        {
+          "source": "./orchestrator/runLoop.js",
+          "items": [
+            {
+              "name": "runLoop",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": false
+        },
+        {
+          "source": "./orchestrator/resumeFlow.js",
+          "items": [
+            {
+              "name": "setupSignalHandlers",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            },
+            {
+              "name": "setStateManager",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": false
+        }
+      ],
+      "exports": [],
+      "functions": [
+        "file:src/index.ts:fn:main:8"
+      ],
+      "classes": [],
+      "topLevelReferences": [
+        "main",
+        "err",
+        "Error",
+        "String",
+        "Date",
+        "error",
+        "process"
+      ]
+    },
+    "file:src/index.ts:fn:main:8": {
+      "id": "file:src/index.ts:fn:main:8",
+      "type": "function",
+      "name": "main",
+      "filePath": "/home/ridgetop/projects/forge/src/index.ts",
+      "line": 8,
+      "endLine": 95,
+      "parentFileId": "file:src/index.ts",
+      "parentClassId": null,
+      "params": [],
+      "returnType": "Promise<void>",
+      "isExported": false,
+      "isAsync": true,
+      "behavioral": {
+        "summary": "Reads config from stdin, validates it, logs info, creates Mandrel client, and checks its health.",
+        "source": "ai",
+        "analyzedAt": "2026-01-18T13:33:09.452Z",
+        "flags": {
+          "databaseRead": false,
+          "databaseWrite": false,
+          "httpCall": true,
+          "fileRead": false,
+          "fileWrite": false,
+          "sendsNotification": false,
+          "modifiesGlobalState": true,
+          "hasSideEffects": true
+        }
+      },
+      "source": "async function main(): Promise<void> {\n  setupSignalHandlers();\n\n  // Read config as a single newline-terminated line (don't wait for EOF)\n  // This allows stdin to remain open for potential future use\n  const configInput = await new Promise<string>((resolve) => {\n    let buffer = '';\n    process.stdin.setEncoding('utf8');\n\n    const onData = (chunk: string) => {\n      buffer += chunk;\n      const newlineIndex = buffer.indexOf('\\n');\n      if (newlineIndex !== -1) {\n        process.stdin.removeListener('data', onData);\n        process.stdin.removeListener('end', onEnd);\n        resolve(buffer.substring(0, newlineIndex));\n      }\n    };\n\n    const onEnd = () => {\n      process.stdin.removeListener('data', onData);\n      resolve(buffer.trim());\n    };\n\n    process.stdin.on('data', onData);\n    process.stdin.on('end', onEnd);\n  });\n\n  if (!configInput.trim()) {\n    const error: ErrorEvent = {\n      type: 'error',\n      message: 'No configuration provided on stdin',\n      fatal: true,\n      timestamp: new Date().toISOString()\n    };\n    emitEvent(error);\n    process.exit(1);\n  }\n  \n  const configResult = parseConfig(configInput);\n  \n  if (!configResult.success) {\n    const error: ErrorEvent = {\n      type: 'error',\n      message: `Invalid configuration: ${configResult.error}`,\n      fatal: true,\n      timestamp: new Date().toISOString()\n    };\n    emitEvent(error);\n    process.exit(1);\n  }\n  \n  const config = configResult.data;\n  \n  console.error(`[forge] Starting run: ${config.runName}`);\n  console.error(`[forge] Total instances: ${config.totalInstances}`);\n  console.error(`[forge] Project: ${config.project}`);\n  console.error(`[forge] Seed: ${config.seedPath}`);\n  \n  const mandrelClient = new MandrelClient(config.mandrelUrl);\n  \n  try {\n    await mandrelClient.checkHealth();\n  } catch (err) {\n    const error: ErrorEvent = {\n      type: 'error',\n      message: err instanceof Error ? err.message : 'Mandrel health check failed',\n      fatal: true,\n      timestamp: new Date().toISOString()\n    };\n    emitEvent(error);\n    process.exit(1);\n  }\n  \n  const stateManager = new StateManager(config.runName, config.totalInstances);\n  setStateManager(stateManager);\n  \n  const existingState = await stateManager.load();\n  if (existingState) {\n    console.error(`[forge] Found existing state: ${existingState.status}, instance ${existingState.currentInstance}/${existingState.totalInstances}`);\n  }\n  \n  await stateManager.save();\n  \n  await runLoop(config, stateManager);\n  \n  console.error('[forge] Run complete');\n}",
+      "references": [
+        "setupSignalHandlers",
+        "Promise",
+        "process",
+        "buffer",
+        "chunk",
+        "newlineIndex",
+        "onData",
+        "onEnd",
+        "resolve",
+        "configInput",
+        "Date",
+        "emitEvent",
+        "error",
+        "parseConfig",
+        "configResult",
+        "console",
+        "config",
+        "MandrelClient",
+        "mandrelClient",
+        "err",
+        "Error",
+        "StateManager",
+        "setStateManager",
+        "stateManager",
+        "existingState",
+        "runLoop"
+      ]
+    },
+    "file:spindles-proxy/src/config.ts": {
+      "id": "file:spindles-proxy/src/config.ts",
+      "type": "file",
+      "name": "config.ts",
+      "filePath": "spindles-proxy/src/config.ts",
+      "line": 1,
+      "endLine": 10,
+      "imports": [],
+      "exports": [
+        {
+          "name": "config",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": false,
+          "kind": "variable"
+        },
+        {
+          "name": "Config",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "type"
+        }
+      ],
+      "functions": [],
+      "classes": [],
+      "topLevelReferences": [
+        "parseInt",
+        "process"
+      ]
+    },
+    "file:spindles-proxy/src/index.ts": {
+      "id": "file:spindles-proxy/src/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "spindles-proxy/src/index.ts",
+      "line": 1,
+      "endLine": 38,
+      "imports": [
+        {
+          "source": "express",
+          "items": [
+            {
+              "name": "express",
+              "alias": null,
+              "isDefault": true,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": false
+        },
+        {
+          "source": "./config.js",
+          "items": [
+            {
+              "name": "config",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": false
+        },
+        {
+          "source": "./session/index.js",
+          "items": [
+            {
+              "name": "sessionRouter",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": false
+        },
+        {
+          "source": "./proxy/index.js",
+          "items": [
+            {
+              "name": "anthropicProxyRoute",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": false
+        },
+        {
+          "source": "./ws/index.js",
+          "items": [
+            {
+              "name": "createWebSocketServer",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            },
+            {
+              "name": "broadcastHub",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": false
+        },
+        {
+          "source": "./logging/index.js",
+          "items": [
+            {
+              "name": "jsonlWriter",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": false
+        }
+      ],
+      "exports": [],
+      "functions": [],
+      "classes": [],
+      "topLevelReferences": [
+        "app",
+        "res",
+        "Date",
+        "console",
+        "process",
+        "wss",
+        "httpServer"
+      ]
+    },
+    "file:src/cc/claudeRunner.ts": {
+      "id": "file:src/cc/claudeRunner.ts",
+      "type": "file",
+      "name": "claudeRunner.ts",
+      "filePath": "src/cc/claudeRunner.ts",
+      "line": 1,
+      "endLine": 110,
+      "imports": [
+        {
+          "source": "child_process",
+          "items": [
+            {
+              "name": "spawn",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            },
+            {
+              "name": "ChildProcess",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": false
+        }
+      ],
+      "exports": [
+        {
+          "name": "RunResult",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "interface"
+        },
+        {
+          "name": "ClaudeRunnerConfig",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "interface"
+        },
+        {
+          "name": "ClaudeRunner",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": false,
+          "kind": "class"
+        }
+      ],
+      "functions": [],
+      "classes": [
+        "file:src/cc/claudeRunner.ts:class:ClaudeRunner:14"
+      ],
+      "topLevelReferences": []
+    },
+    "file:src/cc/claudeRunner.ts:class:ClaudeRunner:14:method:run:21": {
+      "id": "file:src/cc/claudeRunner.ts:class:ClaudeRunner:14:method:run:21",
+      "type": "function",
+      "name": "run",
+      "filePath": "src/cc/claudeRunner.ts",
+      "line": 21,
+      "endLine": 108,
+      "parentFileId": "file:src/cc/claudeRunner.ts",
+      "parentClassId": "file:src/cc/claudeRunner.ts:class:ClaudeRunner:14",
+      "params": [
+        {
+          "name": "prompt",
+          "type": "string",
+          "isOptional": false,
+          "defaultValue": null
+        },
+        {
+          "name": "timeoutMs",
+          "type": "number",
+          "isOptional": false,
+          "defaultValue": null
+        }
+      ],
+      "returnType": "Promise<import(\"/home/ridgetop/projects/forge/src/cc/claudeRunner\").RunResult>",
+      "isExported": false,
+      "isAsync": true,
+      "behavioral": null,
+      "source": "async run(prompt: string, timeoutMs: number): Promise<RunResult> {\n    return new Promise((resolve) => {\n      let stdout = '';\n      let stderr = '';\n      let killed = false;\n      let timeoutHandle: ReturnType<typeof setTimeout> | null = null;\n\n      console.error(`[forge] Spawning Claude Code with timeout ${timeoutMs}ms`);\n\n      const env = {\n        ...process.env,\n        ANTHROPIC_BASE_URL: this.config.spindlesProxyUrl\n      };\n\n      const child: ChildProcess = spawn('claude', [\n        '--print',\n        '--dangerously-skip-permissions',\n        prompt\n      ], {\n        env,\n        stdio: ['ignore', 'pipe', 'pipe']\n      });\n      \n      const cleanup = () => {\n        if (timeoutHandle) {\n          clearTimeout(timeoutHandle);\n          timeoutHandle = null;\n        }\n      };\n      \n      child.stdout?.on('data', (data) => {\n        const chunk = data.toString();\n        stdout += chunk;\n        process.stderr.write(chunk);\n      });\n      \n      child.stderr?.on('data', (data) => {\n        const chunk = data.toString();\n        stderr += chunk;\n        process.stderr.write(chunk);\n      });\n      \n      child.on('error', (err) => {\n        cleanup();\n        console.error(`[forge] Claude Code spawn error: ${err.message}`);\n        resolve({\n          success: false,\n          output: `Spawn error: ${err.message}`,\n          exitCode: null\n        });\n      });\n      \n      child.on('close', (code) => {\n        cleanup();\n        \n        if (killed) {\n          console.error('[forge] Claude Code killed (timeout)');\n          resolve({\n            success: false,\n            output: 'Process killed due to timeout',\n            exitCode: null\n          });\n          return;\n        }\n        \n        const success = code === 0;\n        console.error(`[forge] Claude Code exited with code ${code}`);\n        \n        resolve({\n          success,\n          output: stdout || stderr,\n          exitCode: code\n        });\n      });\n      \n      timeoutHandle = setTimeout(() => {\n        killed = true;\n        console.error(`[forge] Timeout reached (${timeoutMs}ms), killing Claude Code`);\n        child.kill('SIGTERM');\n        \n        setTimeout(() => {\n          if (!child.killed) {\n            child.kill('SIGKILL');\n          }\n        }, 5000);\n      }, timeoutMs);\n    });\n  }",
+      "references": [
+        "Promise",
+        "console",
+        "process",
+        "spawn",
+        "env",
+        "timeoutHandle",
+        "clearTimeout",
+        "child",
+        "data",
+        "stdout",
+        "chunk",
+        "stderr",
+        "cleanup",
+        "err",
+        "resolve",
+        "killed",
+        "code",
+        "success",
+        "setTimeout"
+      ]
+    },
+    "file:src/cc/claudeRunner.ts:class:ClaudeRunner:14": {
+      "id": "file:src/cc/claudeRunner.ts:class:ClaudeRunner:14",
+      "type": "class",
+      "name": "ClaudeRunner",
+      "filePath": "src/cc/claudeRunner.ts",
+      "line": 14,
+      "endLine": 109,
+      "parentFileId": "file:src/cc/claudeRunner.ts",
+      "methods": [
+        "file:src/cc/claudeRunner.ts:class:ClaudeRunner:14:method:run:21"
+      ],
+      "properties": [
+        {
+          "name": "config",
+          "type": "import(\"/home/ridgetop/projects/forge/src/cc/claudeRunner\").ClaudeRunnerConfig",
+          "visibility": "private",
+          "isStatic": false,
+          "isReadonly": false
+        }
+      ],
+      "isExported": true,
+      "extends": null,
+      "implements": []
+    },
+    "file:src/cc/prompt.ts": {
+      "id": "file:src/cc/prompt.ts",
+      "type": "file",
+      "name": "prompt.ts",
+      "filePath": "src/cc/prompt.ts",
+      "line": 1,
+      "endLine": 44,
+      "imports": [
+        {
+          "source": "fs",
+          "items": [
+            {
+              "name": "readFileSync",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": false
+        },
+        {
+          "source": "../config.js",
+          "items": [
+            {
+              "name": "ForgeConfig",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": true
+        }
+      ],
+      "exports": [
+        {
+          "name": "renderPrompt",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": false,
+          "kind": "function"
+        }
+      ],
+      "functions": [
+        "file:src/cc/prompt.ts:fn:renderPrompt:29"
+      ],
+      "classes": [],
+      "topLevelReferences": []
+    },
+    "file:src/cc/prompt.ts:fn:renderPrompt:29": {
+      "id": "file:src/cc/prompt.ts:fn:renderPrompt:29",
+      "type": "function",
+      "name": "renderPrompt",
+      "filePath": "/home/ridgetop/projects/forge/src/cc/prompt.ts",
+      "line": 29,
+      "endLine": 43,
+      "parentFileId": "file:src/cc/prompt.ts",
+      "parentClassId": null,
+      "params": [
+        {
+          "name": "config",
+          "type": "{ runName?: string; totalInstances?: number; project?: string; seedPath?: string; spindlesProxyUrl?: string; mandrelUrl?: string; timeoutMinutes?: number; }",
+          "isOptional": false,
+          "defaultValue": null
+        },
+        {
+          "name": "instanceNumber",
+          "type": "number",
+          "isOptional": false,
+          "defaultValue": null
+        }
+      ],
+      "returnType": "string",
+      "isExported": true,
+      "isAsync": false,
+      "behavioral": {
+        "summary": "Renders prompt template by reading seed file and replacing placeholders with config values.",
+        "source": "ai",
+        "analyzedAt": "2026-01-18T13:33:03.724Z",
+        "flags": {
+          "databaseRead": false,
+          "databaseWrite": false,
+          "httpCall": false,
+          "fileRead": true,
+          "fileWrite": false,
+          "sendsNotification": false,
+          "modifiesGlobalState": false,
+          "hasSideEffects": true
+        }
+      },
+      "source": "export function renderPrompt(config: ForgeConfig, instanceNumber: number): string {\n  let seedContent: string;\n  try {\n    seedContent = readFileSync(config.seedPath, 'utf-8');\n  } catch (err) {\n    seedContent = `[ERROR: Could not read seed file at ${config.seedPath}: ${err}]`;\n  }\n\n  return PROMPT_TEMPLATE\n    .replace('{n}', String(instanceNumber))\n    .replace('{total}', String(config.totalInstances))\n    .replace('{runName}', config.runName)\n    .replace('{project}', config.project)\n    .replace('{seedContent}', seedContent);\n}",
+      "references": [
+        "seedContent",
+        "readFileSync",
+        "err",
+        "PROMPT_TEMPLATE",
+        "String"
+      ]
+    },
+    "file:src/mandrel/mandrelClient.ts": {
+      "id": "file:src/mandrel/mandrelClient.ts",
+      "type": "file",
+      "name": "mandrelClient.ts",
+      "filePath": "src/mandrel/mandrelClient.ts",
+      "line": 1,
+      "endLine": 60,
+      "imports": [
+        {
+          "source": "child_process",
+          "items": [
+            {
+              "name": "spawn",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": false
+        }
+      ],
+      "exports": [
+        {
+          "name": "MandrelClient",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": false,
+          "kind": "class"
+        }
+      ],
+      "functions": [],
+      "classes": [
+        "file:src/mandrel/mandrelClient.ts:class:MandrelClient:3"
+      ],
+      "topLevelReferences": []
+    },
+    "file:src/mandrel/mandrelClient.ts:class:MandrelClient:3:method:ping:10": {
+      "id": "file:src/mandrel/mandrelClient.ts:class:MandrelClient:3:method:ping:10",
+      "type": "function",
+      "name": "ping",
+      "filePath": "src/mandrel/mandrelClient.ts",
+      "line": 10,
+      "endLine": 47,
+      "parentFileId": "file:src/mandrel/mandrelClient.ts",
+      "parentClassId": "file:src/mandrel/mandrelClient.ts:class:MandrelClient:3",
+      "params": [],
+      "returnType": "Promise<boolean>",
+      "isExported": false,
+      "isAsync": true,
+      "behavioral": null,
+      "source": "async ping(): Promise<boolean> {\n    const curlCommand = `curl -s -X POST ${this.mandrelUrl}/mcp/tools/mandrel_ping -H \"Content-Type: application/json\" -d '{\"arguments\": {}}'`;\n    \n    return new Promise((resolve) => {\n      const child = spawn('ssh', ['hetzner', curlCommand], {\n        stdio: ['ignore', 'pipe', 'pipe']\n      });\n      \n      let stdout = '';\n      \n      child.stdout.on('data', (data) => {\n        stdout += data.toString();\n      });\n      \n      child.on('error', () => {\n        resolve(false);\n      });\n      \n      child.on('close', (code) => {\n        if (code !== 0) {\n          resolve(false);\n          return;\n        }\n        \n        try {\n          const response = JSON.parse(stdout);\n          resolve(response.success === true || response.result?.includes('Pong'));\n        } catch {\n          resolve(stdout.includes('Pong') || stdout.includes('pong'));\n        }\n      });\n      \n      setTimeout(() => {\n        child.kill();\n        resolve(false);\n      }, 10000);\n    });\n  }",
+      "references": [
+        "Promise",
+        "spawn",
+        "curlCommand",
+        "child",
+        "stdout",
+        "data",
+        "resolve",
+        "code",
+        "JSON",
+        "response",
+        "setTimeout"
+      ]
+    },
+    "file:src/mandrel/mandrelClient.ts:class:MandrelClient:3:method:checkHealth:49": {
+      "id": "file:src/mandrel/mandrelClient.ts:class:MandrelClient:3:method:checkHealth:49",
+      "type": "function",
+      "name": "checkHealth",
+      "filePath": "src/mandrel/mandrelClient.ts",
+      "line": 49,
+      "endLine": 58,
+      "parentFileId": "file:src/mandrel/mandrelClient.ts",
+      "parentClassId": "file:src/mandrel/mandrelClient.ts:class:MandrelClient:3",
+      "params": [],
+      "returnType": "Promise<void>",
+      "isExported": false,
+      "isAsync": true,
+      "behavioral": null,
+      "source": "async checkHealth(): Promise<void> {\n    console.error('[forge] Checking Mandrel health...');\n    const healthy = await this.ping();\n    \n    if (!healthy) {\n      throw new Error('Mandrel is unreachable. Ensure VPS is running and accessible via ssh hetzner.');\n    }\n    \n    console.error('[forge] Mandrel health check passed');\n  }",
+      "references": [
+        "console",
+        "healthy",
+        "Error"
+      ]
+    },
+    "file:src/mandrel/mandrelClient.ts:class:MandrelClient:3": {
+      "id": "file:src/mandrel/mandrelClient.ts:class:MandrelClient:3",
+      "type": "class",
+      "name": "MandrelClient",
+      "filePath": "src/mandrel/mandrelClient.ts",
+      "line": 3,
+      "endLine": 59,
+      "parentFileId": "file:src/mandrel/mandrelClient.ts",
+      "methods": [
+        "file:src/mandrel/mandrelClient.ts:class:MandrelClient:3:method:ping:10",
+        "file:src/mandrel/mandrelClient.ts:class:MandrelClient:3:method:checkHealth:49"
+      ],
+      "properties": [
+        {
+          "name": "mandrelUrl",
+          "type": "string",
+          "visibility": "private",
+          "isStatic": false,
+          "isReadonly": false
+        }
+      ],
+      "isExported": true,
+      "extends": null,
+      "implements": []
+    },
+    "file:src/orchestrator/resumeFlow.ts": {
+      "id": "file:src/orchestrator/resumeFlow.ts",
+      "type": "file",
+      "name": "resumeFlow.ts",
+      "filePath": "src/orchestrator/resumeFlow.ts",
+      "line": 1,
+      "endLine": 72,
+      "imports": [
+        {
+          "source": "../state/stateManager.js",
+          "items": [
+            {
+              "name": "StateManager",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            },
+            {
+              "name": "SirkState",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": false
+        },
+        {
+          "source": "../events.js",
+          "items": [
+            {
+              "name": "emitEvent",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            },
+            {
+              "name": "ErrorEvent",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": false
+        }
+      ],
+      "exports": [
+        {
+          "name": "isPauseRequested",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": false,
+          "kind": "function"
+        },
+        {
+          "name": "setStateManager",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": false,
+          "kind": "function"
+        },
+        {
+          "name": "pauseRun",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": false,
+          "kind": "function"
+        },
+        {
+          "name": "resumeRun",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": false,
+          "kind": "function"
+        },
+        {
+          "name": "setupSignalHandlers",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": false,
+          "kind": "function"
+        }
+      ],
+      "functions": [
+        "file:src/orchestrator/resumeFlow.ts:fn:isPauseRequested:7",
+        "file:src/orchestrator/resumeFlow.ts:fn:setStateManager:11",
+        "file:src/orchestrator/resumeFlow.ts:fn:pauseRun:15",
+        "file:src/orchestrator/resumeFlow.ts:fn:resumeRun:28",
+        "file:src/orchestrator/resumeFlow.ts:fn:setupSignalHandlers:53"
+      ],
+      "classes": [],
+      "topLevelReferences": []
+    },
+    "file:src/orchestrator/resumeFlow.ts:fn:isPauseRequested:7": {
+      "id": "file:src/orchestrator/resumeFlow.ts:fn:isPauseRequested:7",
+      "type": "function",
+      "name": "isPauseRequested",
+      "filePath": "/home/ridgetop/projects/forge/src/orchestrator/resumeFlow.ts",
+      "line": 7,
+      "endLine": 9,
+      "parentFileId": "file:src/orchestrator/resumeFlow.ts",
+      "parentClassId": null,
+      "params": [],
+      "returnType": "boolean",
+      "isExported": true,
+      "isAsync": false,
+      "behavioral": {
+        "summary": "Returns the value of the pauseRequested variable.",
+        "source": "ai",
+        "analyzedAt": "2026-01-18T13:33:05.778Z",
+        "flags": {
+          "databaseRead": false,
+          "databaseWrite": false,
+          "httpCall": false,
+          "fileRead": false,
+          "fileWrite": false,
+          "sendsNotification": false,
+          "modifiesGlobalState": false,
+          "hasSideEffects": false
+        }
+      },
+      "source": "export function isPauseRequested(): boolean {\n  return pauseRequested;\n}",
+      "references": [
+        "pauseRequested"
+      ]
+    },
+    "file:src/orchestrator/resumeFlow.ts:fn:setStateManager:11": {
+      "id": "file:src/orchestrator/resumeFlow.ts:fn:setStateManager:11",
+      "type": "function",
+      "name": "setStateManager",
+      "filePath": "/home/ridgetop/projects/forge/src/orchestrator/resumeFlow.ts",
+      "line": 11,
+      "endLine": 13,
+      "parentFileId": "file:src/orchestrator/resumeFlow.ts",
+      "parentClassId": null,
+      "params": [
+        {
+          "name": "manager",
+          "type": "import(\"/home/ridgetop/projects/forge/src/state/stateManager\").StateManager",
+          "isOptional": false,
+          "defaultValue": null
+        }
+      ],
+      "returnType": "void",
+      "isExported": true,
+      "isAsync": false,
+      "behavioral": {
+        "summary": "Sets the current state manager to the provided instance.",
+        "source": "ai",
+        "analyzedAt": "2026-01-18T13:33:02.802Z",
+        "flags": {
+          "databaseRead": false,
+          "databaseWrite": false,
+          "httpCall": false,
+          "fileRead": false,
+          "fileWrite": false,
+          "sendsNotification": false,
+          "modifiesGlobalState": true,
+          "hasSideEffects": true
+        }
+      },
+      "source": "export function setStateManager(manager: StateManager): void {\n  currentStateManager = manager;\n}",
+      "references": [
+        "currentStateManager"
+      ]
+    },
+    "file:src/orchestrator/resumeFlow.ts:fn:pauseRun:15": {
+      "id": "file:src/orchestrator/resumeFlow.ts:fn:pauseRun:15",
+      "type": "function",
+      "name": "pauseRun",
+      "filePath": "/home/ridgetop/projects/forge/src/orchestrator/resumeFlow.ts",
+      "line": 15,
+      "endLine": 26,
+      "parentFileId": "file:src/orchestrator/resumeFlow.ts",
+      "parentClassId": null,
+      "params": [],
+      "returnType": "Promise<void>",
+      "isExported": true,
+      "isAsync": true,
+      "behavioral": {
+        "summary": "Sets pause flag, updates and saves current state manager status to 'paused'.",
+        "source": "ai",
+        "analyzedAt": "2026-01-18T13:33:04.681Z",
+        "flags": {
+          "databaseRead": true,
+          "databaseWrite": true,
+          "httpCall": false,
+          "fileRead": false,
+          "fileWrite": false,
+          "sendsNotification": false,
+          "modifiesGlobalState": true,
+          "hasSideEffects": true
+        }
+      },
+      "source": "export async function pauseRun(): Promise<void> {\n  pauseRequested = true;\n  \n  if (currentStateManager) {\n    const state = currentStateManager.getState();\n    if (state) {\n      currentStateManager.setStatus('paused');\n      await currentStateManager.save();\n      console.error('[forge] Run paused. State saved.');\n    }\n  }\n}",
+      "references": [
+        "pauseRequested",
+        "currentStateManager",
+        "state",
+        "console"
+      ]
+    },
+    "file:src/orchestrator/resumeFlow.ts:fn:resumeRun:28": {
+      "id": "file:src/orchestrator/resumeFlow.ts:fn:resumeRun:28",
+      "type": "function",
+      "name": "resumeRun",
+      "filePath": "/home/ridgetop/projects/forge/src/orchestrator/resumeFlow.ts",
+      "line": 28,
+      "endLine": 51,
+      "parentFileId": "file:src/orchestrator/resumeFlow.ts",
+      "parentClassId": null,
+      "params": [
+        {
+          "name": "runName",
+          "type": "string",
+          "isOptional": false,
+          "defaultValue": null
+        }
+      ],
+      "returnType": "Promise<import(\"/home/ridgetop/projects/forge/src/state/stateManager\").SirkState>",
+      "isExported": true,
+      "isAsync": true,
+      "behavioral": {
+        "summary": "Loads saved state for a run via StateManager and returns it if not completed, with status logging",
+        "source": "ai",
+        "analyzedAt": "2026-01-18T13:33:05.538Z",
+        "flags": {
+          "databaseRead": false,
+          "databaseWrite": false,
+          "httpCall": false,
+          "fileRead": false,
+          "fileWrite": false,
+          "sendsNotification": false,
+          "modifiesGlobalState": false,
+          "hasSideEffects": true
+        }
+      },
+      "source": "export async function resumeRun(runName: string): Promise<SirkState | null> {\n  const tempManager = new StateManager(runName, 0);\n  const state = await tempManager.load();\n  \n  if (!state) {\n    console.error(`[forge] No saved state found for run: ${runName}`);\n    return null;\n  }\n  \n  if (state.status === 'completed') {\n    console.error(`[forge] Run ${runName} is already completed`);\n    return null;\n  }\n  \n  if (state.status === 'failed') {\n    console.error(`[forge] Run ${runName} failed. Can resume from instance ${state.currentInstance}`);\n  } else if (state.status === 'paused') {\n    console.error(`[forge] Resuming paused run ${runName} from instance ${state.currentInstance}`);\n  } else {\n    console.error(`[forge] Recovering run ${runName} from instance ${state.currentInstance}`);\n  }\n  \n  return state;\n}",
+      "references": [
+        "StateManager",
+        "tempManager",
+        "state",
+        "console"
+      ]
+    },
+    "file:src/orchestrator/resumeFlow.ts:fn:setupSignalHandlers:53": {
+      "id": "file:src/orchestrator/resumeFlow.ts:fn:setupSignalHandlers:53",
+      "type": "function",
+      "name": "setupSignalHandlers",
+      "filePath": "/home/ridgetop/projects/forge/src/orchestrator/resumeFlow.ts",
+      "line": 53,
+      "endLine": 71,
+      "parentFileId": "file:src/orchestrator/resumeFlow.ts",
+      "parentClassId": null,
+      "params": [],
+      "returnType": "void",
+      "isExported": true,
+      "isAsync": false,
+      "behavioral": {
+        "summary": "Sets up SIGINT/SIGTERM handlers to pause run, emit event, and exit process.",
+        "source": "ai",
+        "analyzedAt": "2026-01-18T13:33:09.231Z",
+        "flags": {
+          "databaseRead": false,
+          "databaseWrite": false,
+          "httpCall": false,
+          "fileRead": false,
+          "fileWrite": false,
+          "sendsNotification": false,
+          "modifiesGlobalState": true,
+          "hasSideEffects": true
+        }
+      },
+      "source": "export function setupSignalHandlers(): void {\n  const handleSignal = async (signal: string) => {\n    console.error(`[forge] Received ${signal}, pausing gracefully...`);\n    await pauseRun();\n    \n    const error: ErrorEvent = {\n      type: 'error',\n      message: `Run paused by ${signal}`,\n      fatal: false,\n      timestamp: new Date().toISOString()\n    };\n    emitEvent(error);\n    \n    process.exit(0);\n  };\n  \n  process.on('SIGINT', () => handleSignal('SIGINT'));\n  process.on('SIGTERM', () => handleSignal('SIGTERM'));\n}",
+      "references": [
+        "console",
+        "signal",
+        "pauseRun",
+        "Date",
+        "emitEvent",
+        "error",
+        "process",
+        "handleSignal"
+      ]
+    },
+    "file:src/orchestrator/runLoop.ts": {
+      "id": "file:src/orchestrator/runLoop.ts",
+      "type": "file",
+      "name": "runLoop.ts",
+      "filePath": "src/orchestrator/runLoop.ts",
+      "line": 1,
+      "endLine": 131,
+      "imports": [
+        {
+          "source": "../config.js",
+          "items": [
+            {
+              "name": "ForgeConfig",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": true
+        },
+        {
+          "source": "../state/stateManager.js",
+          "items": [
+            {
+              "name": "StateManager",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            },
+            {
+              "name": "SirkState",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": false
+        },
+        {
+          "source": "../proxy/spindlesClient.js",
+          "items": [
+            {
+              "name": "SpindlesClient",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            },
+            {
+              "name": "SirkSession",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": false
+        },
+        {
+          "source": "../cc/claudeRunner.js",
+          "items": [
+            {
+              "name": "ClaudeRunner",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": false
+        },
+        {
+          "source": "../cc/prompt.js",
+          "items": [
+            {
+              "name": "renderPrompt",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": false
+        },
+        {
+          "source": "../events.js",
+          "items": [
+            {
+              "name": "emitEvent",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            },
+            {
+              "name": "RunStartedEvent",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            },
+            {
+              "name": "InstanceStartedEvent",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            },
+            {
+              "name": "InstanceCompletedEvent",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            },
+            {
+              "name": "InstanceFailedEvent",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            },
+            {
+              "name": "RunCompletedEvent",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": false
+        }
+      ],
+      "exports": [
+        {
+          "name": "runLoop",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": false,
+          "kind": "function"
+        }
+      ],
+      "functions": [
+        "file:src/orchestrator/runLoop.ts:fn:runLoop:15"
+      ],
+      "classes": [],
+      "topLevelReferences": []
+    },
+    "file:src/orchestrator/runLoop.ts:fn:runLoop:15": {
+      "id": "file:src/orchestrator/runLoop.ts:fn:runLoop:15",
+      "type": "function",
+      "name": "runLoop",
+      "filePath": "/home/ridgetop/projects/forge/src/orchestrator/runLoop.ts",
+      "line": 15,
+      "endLine": 130,
+      "parentFileId": "file:src/orchestrator/runLoop.ts",
+      "parentClassId": null,
+      "params": [
+        {
+          "name": "config",
+          "type": "{ runName?: string; totalInstances?: number; project?: string; seedPath?: string; spindlesProxyUrl?: string; mandrelUrl?: string; timeoutMinutes?: number; }",
+          "isOptional": false,
+          "defaultValue": null
+        },
+        {
+          "name": "stateManager",
+          "type": "import(\"/home/ridgetop/projects/forge/src/state/stateManager\").StateManager",
+          "isOptional": false,
+          "defaultValue": null
+        }
+      ],
+      "returnType": "Promise<void>",
+      "isExported": true,
+      "isAsync": true,
+      "behavioral": {
+        "summary": "Orchestrates loop over instances: emits events, sets sessions, runs prompts via ClaudeRunner with retries",
+        "source": "ai",
+        "analyzedAt": "2026-01-18T13:33:08.676Z",
+        "flags": {
+          "databaseRead": false,
+          "databaseWrite": false,
+          "httpCall": true,
+          "fileRead": false,
+          "fileWrite": false,
+          "sendsNotification": false,
+          "modifiesGlobalState": false,
+          "hasSideEffects": true
+        }
+      },
+      "source": "export async function runLoop(\n  config: ForgeConfig,\n  stateManager: StateManager\n): Promise<void> {\n  const spindlesClient = new SpindlesClient(config.spindlesProxyUrl);\n  const claudeRunner = new ClaudeRunner({\n    spindlesProxyUrl: config.spindlesProxyUrl,\n    mandrelUrl: config.mandrelUrl\n  });\n  const timeoutMs = config.timeoutMinutes * 60 * 1000;\n  \n  const runStarted: RunStartedEvent = {\n    type: 'run_started',\n    runName: config.runName,\n    totalInstances: config.totalInstances,\n    timestamp: new Date().toISOString()\n  };\n  emitEvent(runStarted);\n  \n  let successCount = 0;\n  let failCount = 0;\n  \n  const state = stateManager.getState();\n  const startInstance = state?.currentInstance ?? 1;\n  \n  for (let instanceNumber = startInstance; instanceNumber <= config.totalInstances; instanceNumber++) {\n    const instanceStarted: InstanceStartedEvent = {\n      type: 'instance_started',\n      runName: config.runName,\n      instanceNumber,\n      totalInstances: config.totalInstances,\n      timestamp: new Date().toISOString()\n    };\n    emitEvent(instanceStarted);\n    \n    const startTime = Date.now();\n    \n    const session: SirkSession = {\n      runName: config.runName,\n      instanceNumber,\n      totalInstances: config.totalInstances,\n      project: config.project\n    };\n    \n    try {\n      await spindlesClient.setSession(session);\n    } catch (err) {\n      console.error(`[forge] Warning: Failed to set spindles session: ${err}`);\n    }\n    \n    const prompt = renderPrompt(config, instanceNumber);\n    \n    let success = false;\n    let lastError = '';\n    \n    for (let attempt = 0; attempt < 2; attempt++) {\n      if (attempt > 0) {\n        console.error(`[forge] Retrying instance ${instanceNumber} (attempt ${attempt + 1})`);\n      }\n      \n      const result = await claudeRunner.run(prompt, timeoutMs);\n      \n      if (result.success) {\n        success = true;\n        break;\n      }\n      \n      lastError = result.output || `Exit code: ${result.exitCode}`;\n    }\n    \n    const durationMs = Date.now() - startTime;\n    \n    try {\n      await spindlesClient.clearSession();\n    } catch (err) {\n      console.error(`[forge] Warning: Failed to clear spindles session: ${err}`);\n    }\n    \n    await stateManager.markInstanceComplete(instanceNumber, success);\n    \n    if (success) {\n      successCount++;\n      const completed: InstanceCompletedEvent = {\n        type: 'instance_completed',\n        runName: config.runName,\n        instanceNumber,\n        success: true,\n        durationMs,\n        timestamp: new Date().toISOString()\n      };\n      emitEvent(completed);\n    } else {\n      failCount++;\n      const failed: InstanceFailedEvent = {\n        type: 'instance_failed',\n        runName: config.runName,\n        instanceNumber,\n        error: lastError,\n        timestamp: new Date().toISOString()\n      };\n      emitEvent(failed);\n    }\n  }\n  \n  const runCompleted: RunCompletedEvent = {\n    type: 'run_completed',\n    runName: config.runName,\n    successCount,\n    failCount,\n    timestamp: new Date().toISOString()\n  };\n  emitEvent(runCompleted);\n  \n  stateManager.setStatus(failCount === 0 ? 'completed' : 'failed');\n  await stateManager.save();\n}",
+      "references": [
+        "SpindlesClient",
+        "ClaudeRunner",
+        "Date",
+        "emitEvent",
+        "runStarted",
+        "state",
+        "startInstance",
+        "instanceNumber",
+        "instanceStarted",
+        "spindlesClient",
+        "session",
+        "console",
+        "err",
+        "renderPrompt",
+        "attempt",
+        "claudeRunner",
+        "prompt",
+        "timeoutMs",
+        "result",
+        "success",
+        "lastError",
+        "startTime",
+        "successCount",
+        "durationMs",
+        "completed",
+        "failCount",
+        "failed",
+        "runCompleted"
+      ]
+    },
+    "file:src/proxy/spindlesClient.ts": {
+      "id": "file:src/proxy/spindlesClient.ts",
+      "type": "file",
+      "name": "spindlesClient.ts",
+      "filePath": "src/proxy/spindlesClient.ts",
+      "line": 1,
+      "endLine": 58,
+      "imports": [],
+      "exports": [
+        {
+          "name": "SirkSession",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "interface"
+        },
+        {
+          "name": "SpindlesClient",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": false,
+          "kind": "class"
+        }
+      ],
+      "functions": [],
+      "classes": [
+        "file:src/proxy/spindlesClient.ts:class:SpindlesClient:8"
+      ],
+      "topLevelReferences": []
+    },
+    "file:src/proxy/spindlesClient.ts:class:SpindlesClient:8:method:setSession:15": {
+      "id": "file:src/proxy/spindlesClient.ts:class:SpindlesClient:8:method:setSession:15",
+      "type": "function",
+      "name": "setSession",
+      "filePath": "src/proxy/spindlesClient.ts",
+      "line": 15,
+      "endLine": 28,
+      "parentFileId": "file:src/proxy/spindlesClient.ts",
+      "parentClassId": "file:src/proxy/spindlesClient.ts:class:SpindlesClient:8",
+      "params": [
+        {
+          "name": "session",
+          "type": "import(\"/home/ridgetop/projects/forge/src/proxy/spindlesClient\").SirkSession",
+          "isOptional": false,
+          "defaultValue": null
+        }
+      ],
+      "returnType": "Promise<void>",
+      "isExported": false,
+      "isAsync": true,
+      "behavioral": null,
+      "source": "async setSession(session: SirkSession): Promise<void> {\n    console.error(`[forge] Setting spindles session: instance ${session.instanceNumber}/${session.totalInstances}`);\n    \n    const response = await fetch(`${this.baseUrl}/sirk/session`, {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify(session)\n    });\n    \n    if (!response.ok) {\n      const text = await response.text();\n      throw new Error(`Failed to set spindles session: ${response.status} ${text}`);\n    }\n  }",
+      "references": [
+        "console",
+        "fetch",
+        "JSON",
+        "response",
+        "Error",
+        "text"
+      ]
+    },
+    "file:src/proxy/spindlesClient.ts:class:SpindlesClient:8:method:clearSession:30": {
+      "id": "file:src/proxy/spindlesClient.ts:class:SpindlesClient:8:method:clearSession:30",
+      "type": "function",
+      "name": "clearSession",
+      "filePath": "src/proxy/spindlesClient.ts",
+      "line": 30,
+      "endLine": 41,
+      "parentFileId": "file:src/proxy/spindlesClient.ts",
+      "parentClassId": "file:src/proxy/spindlesClient.ts:class:SpindlesClient:8",
+      "params": [],
+      "returnType": "Promise<void>",
+      "isExported": false,
+      "isAsync": true,
+      "behavioral": null,
+      "source": "async clearSession(): Promise<void> {\n    console.error('[forge] Clearing spindles session');\n    \n    const response = await fetch(`${this.baseUrl}/sirk/session`, {\n      method: 'DELETE'\n    });\n    \n    if (!response.ok) {\n      const text = await response.text();\n      throw new Error(`Failed to clear spindles session: ${response.status} ${text}`);\n    }\n  }",
+      "references": [
+        "console",
+        "fetch",
+        "response",
+        "Error",
+        "text"
+      ]
+    },
+    "file:src/proxy/spindlesClient.ts:class:SpindlesClient:8:method:getSession:43": {
+      "id": "file:src/proxy/spindlesClient.ts:class:SpindlesClient:8:method:getSession:43",
+      "type": "function",
+      "name": "getSession",
+      "filePath": "src/proxy/spindlesClient.ts",
+      "line": 43,
+      "endLine": 56,
+      "parentFileId": "file:src/proxy/spindlesClient.ts",
+      "parentClassId": "file:src/proxy/spindlesClient.ts:class:SpindlesClient:8",
+      "params": [],
+      "returnType": "Promise<import(\"/home/ridgetop/projects/forge/src/proxy/spindlesClient\").SirkSession>",
+      "isExported": false,
+      "isAsync": true,
+      "behavioral": null,
+      "source": "async getSession(): Promise<SirkSession | null> {\n    const response = await fetch(`${this.baseUrl}/sirk/session`);\n    \n    if (response.status === 404) {\n      return null;\n    }\n    \n    if (!response.ok) {\n      const text = await response.text();\n      throw new Error(`Failed to get spindles session: ${response.status} ${text}`);\n    }\n    \n    return response.json() as Promise<SirkSession>;\n  }",
+      "references": [
+        "fetch",
+        "response",
+        "Error",
+        "text"
+      ]
+    },
+    "file:src/proxy/spindlesClient.ts:class:SpindlesClient:8": {
+      "id": "file:src/proxy/spindlesClient.ts:class:SpindlesClient:8",
+      "type": "class",
+      "name": "SpindlesClient",
+      "filePath": "src/proxy/spindlesClient.ts",
+      "line": 8,
+      "endLine": 57,
+      "parentFileId": "file:src/proxy/spindlesClient.ts",
+      "methods": [
+        "file:src/proxy/spindlesClient.ts:class:SpindlesClient:8:method:setSession:15",
+        "file:src/proxy/spindlesClient.ts:class:SpindlesClient:8:method:clearSession:30",
+        "file:src/proxy/spindlesClient.ts:class:SpindlesClient:8:method:getSession:43"
+      ],
+      "properties": [
+        {
+          "name": "baseUrl",
+          "type": "string",
+          "visibility": "private",
+          "isStatic": false,
+          "isReadonly": false
+        }
+      ],
+      "isExported": true,
+      "extends": null,
+      "implements": []
+    },
+    "file:src/state/stateManager.ts": {
+      "id": "file:src/state/stateManager.ts",
+      "type": "file",
+      "name": "stateManager.ts",
+      "filePath": "src/state/stateManager.ts",
+      "line": 1,
+      "endLine": 98,
+      "imports": [
+        {
+          "source": "fs/promises",
+          "items": [
+            {
+              "name": "mkdir",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            },
+            {
+              "name": "readFile",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            },
+            {
+              "name": "writeFile",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            },
+            {
+              "name": "rename",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": false
+        },
+        {
+          "source": "path",
+          "items": [
+            {
+              "name": "dirname",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            },
+            {
+              "name": "join",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": false
+        },
+        {
+          "source": "os",
+          "items": [
+            {
+              "name": "homedir",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": false
+        }
+      ],
+      "exports": [
+        {
+          "name": "CompletedInstance",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "interface"
+        },
+        {
+          "name": "SirkState",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "interface"
+        },
+        {
+          "name": "StateManager",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": false,
+          "kind": "class"
+        }
+      ],
+      "functions": [],
+      "classes": [
+        "file:src/state/stateManager.ts:class:StateManager:19"
+      ],
+      "topLevelReferences": []
+    },
+    "file:src/state/stateManager.ts:class:StateManager:19:method:load:35": {
+      "id": "file:src/state/stateManager.ts:class:StateManager:19:method:load:35",
+      "type": "function",
+      "name": "load",
+      "filePath": "src/state/stateManager.ts",
+      "line": 35,
+      "endLine": 46,
+      "parentFileId": "file:src/state/stateManager.ts",
+      "parentClassId": "file:src/state/stateManager.ts:class:StateManager:19",
+      "params": [],
+      "returnType": "Promise<import(\"/home/ridgetop/projects/forge/src/state/stateManager\").SirkState>",
+      "isExported": false,
+      "isAsync": true,
+      "behavioral": null,
+      "source": "async load(): Promise<SirkState | null> {\n    try {\n      const content = await readFile(this.stateFilePath, 'utf8');\n      this.state = JSON.parse(content) as SirkState;\n      return this.state;\n    } catch (err) {\n      if ((err as NodeJS.ErrnoException).code === 'ENOENT') {\n        return null;\n      }\n      throw err;\n    }\n  }",
+      "references": [
+        "readFile",
+        "JSON",
+        "content",
+        "err"
+      ]
+    },
+    "file:src/state/stateManager.ts:class:StateManager:19:method:save:48": {
+      "id": "file:src/state/stateManager.ts:class:StateManager:19:method:save:48",
+      "type": "function",
+      "name": "save",
+      "filePath": "src/state/stateManager.ts",
+      "line": 48,
+      "endLine": 65,
+      "parentFileId": "file:src/state/stateManager.ts",
+      "parentClassId": "file:src/state/stateManager.ts:class:StateManager:19",
+      "params": [
+        {
+          "name": "state",
+          "type": "import(\"/home/ridgetop/projects/forge/src/state/stateManager\").SirkState",
+          "isOptional": true,
+          "defaultValue": null
+        }
+      ],
+      "returnType": "Promise<void>",
+      "isExported": false,
+      "isAsync": true,
+      "behavioral": null,
+      "source": "async save(state?: SirkState): Promise<void> {\n    if (state) {\n      this.state = state;\n    }\n    \n    if (!this.state) {\n      throw new Error('No state to save');\n    }\n    \n    const dir = dirname(this.stateFilePath);\n    await mkdir(dir, { recursive: true });\n    \n    const tempPath = this.stateFilePath + '.tmp';\n    const content = JSON.stringify(this.state, null, 2);\n    \n    await writeFile(tempPath, content, 'utf8');\n    await rename(tempPath, this.stateFilePath);\n  }",
+      "references": [
+        "Error",
+        "dirname",
+        "mkdir",
+        "dir",
+        "JSON",
+        "writeFile",
+        "tempPath",
+        "content",
+        "rename"
+      ]
+    },
+    "file:src/state/stateManager.ts:class:StateManager:19:method:markInstanceComplete:67": {
+      "id": "file:src/state/stateManager.ts:class:StateManager:19:method:markInstanceComplete:67",
+      "type": "function",
+      "name": "markInstanceComplete",
+      "filePath": "src/state/stateManager.ts",
+      "line": 67,
+      "endLine": 86,
+      "parentFileId": "file:src/state/stateManager.ts",
+      "parentClassId": "file:src/state/stateManager.ts:class:StateManager:19",
+      "params": [
+        {
+          "name": "instanceNumber",
+          "type": "number",
+          "isOptional": false,
+          "defaultValue": null
+        },
+        {
+          "name": "success",
+          "type": "boolean",
+          "isOptional": false,
+          "defaultValue": null
+        }
+      ],
+      "returnType": "Promise<void>",
+      "isExported": false,
+      "isAsync": true,
+      "behavioral": null,
+      "source": "async markInstanceComplete(instanceNumber: number, success: boolean): Promise<void> {\n    if (!this.state) {\n      throw new Error('State not initialized');\n    }\n    \n    this.state.completedInstances.push({\n      instanceNumber,\n      success,\n      timestamp: new Date().toISOString()\n    });\n    \n    this.state.currentInstance = instanceNumber + 1;\n    \n    if (instanceNumber >= this.state.totalInstances) {\n      const allSuccess = this.state.completedInstances.every(i => i.success);\n      this.state.status = allSuccess ? 'completed' : 'failed';\n    }\n    \n    await this.save();\n  }",
+      "references": [
+        "Error",
+        "Date",
+        "i",
+        "allSuccess"
+      ]
+    },
+    "file:src/state/stateManager.ts:class:StateManager:19:method:getState:88": {
+      "id": "file:src/state/stateManager.ts:class:StateManager:19:method:getState:88",
+      "type": "function",
+      "name": "getState",
+      "filePath": "src/state/stateManager.ts",
+      "line": 88,
+      "endLine": 90,
+      "parentFileId": "file:src/state/stateManager.ts",
+      "parentClassId": "file:src/state/stateManager.ts:class:StateManager:19",
+      "params": [],
+      "returnType": "import(\"/home/ridgetop/projects/forge/src/state/stateManager\").SirkState",
+      "isExported": false,
+      "isAsync": false,
+      "behavioral": null,
+      "source": "getState(): SirkState | null {\n    return this.state;\n  }",
+      "references": []
+    },
+    "file:src/state/stateManager.ts:class:StateManager:19:method:setStatus:92": {
+      "id": "file:src/state/stateManager.ts:class:StateManager:19:method:setStatus:92",
+      "type": "function",
+      "name": "setStatus",
+      "filePath": "src/state/stateManager.ts",
+      "line": 92,
+      "endLine": 96,
+      "parentFileId": "file:src/state/stateManager.ts",
+      "parentClassId": "file:src/state/stateManager.ts:class:StateManager:19",
+      "params": [
+        {
+          "name": "status",
+          "type": "\"running\" | \"paused\" | \"completed\" | \"failed\"",
+          "isOptional": false,
+          "defaultValue": null
+        }
+      ],
+      "returnType": "void",
+      "isExported": false,
+      "isAsync": false,
+      "behavioral": null,
+      "source": "setStatus(status: SirkState['status']): void {\n    if (this.state) {\n      this.state.status = status;\n    }\n  }",
+      "references": []
+    },
+    "file:src/state/stateManager.ts:class:StateManager:19": {
+      "id": "file:src/state/stateManager.ts:class:StateManager:19",
+      "type": "class",
+      "name": "StateManager",
+      "filePath": "src/state/stateManager.ts",
+      "line": 19,
+      "endLine": 97,
+      "parentFileId": "file:src/state/stateManager.ts",
+      "methods": [
+        "file:src/state/stateManager.ts:class:StateManager:19:method:load:35",
+        "file:src/state/stateManager.ts:class:StateManager:19:method:save:48",
+        "file:src/state/stateManager.ts:class:StateManager:19:method:markInstanceComplete:67",
+        "file:src/state/stateManager.ts:class:StateManager:19:method:getState:88",
+        "file:src/state/stateManager.ts:class:StateManager:19:method:setStatus:92"
+      ],
+      "properties": [
+        {
+          "name": "stateFilePath",
+          "type": "string",
+          "visibility": "private",
+          "isStatic": false,
+          "isReadonly": false
+        },
+        {
+          "name": "state",
+          "type": "import(\"/home/ridgetop/projects/forge/src/state/stateManager\").SirkState",
+          "visibility": "private",
+          "isStatic": false,
+          "isReadonly": false
+        }
+      ],
+      "isExported": true,
+      "extends": null,
+      "implements": []
+    },
+    "file:spindles-proxy/src/logging/index.ts": {
+      "id": "file:spindles-proxy/src/logging/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "spindles-proxy/src/logging/index.ts",
+      "line": 1,
+      "endLine": 2,
+      "imports": [],
+      "exports": [
+        {
+          "name": "jsonlWriter",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": false,
+          "kind": "variable"
+        },
+        {
+          "name": "jsonlWriter",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": false,
+          "kind": "reexport",
+          "source": "./jsonlWriter.js"
+        }
+      ],
+      "functions": [],
+      "classes": [],
+      "topLevelReferences": []
+    },
+    "file:spindles-proxy/src/logging/jsonlWriter.ts": {
+      "id": "file:spindles-proxy/src/logging/jsonlWriter.ts",
+      "type": "file",
+      "name": "jsonlWriter.ts",
+      "filePath": "spindles-proxy/src/logging/jsonlWriter.ts",
+      "line": 1,
+      "endLine": 46,
+      "imports": [
+        {
+          "source": "fs",
+          "items": [
+            {
+              "name": "createWriteStream",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            },
+            {
+              "name": "WriteStream",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": false
+        },
+        {
+          "source": "../config.js",
+          "items": [
+            {
+              "name": "config",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": false
+        },
+        {
+          "source": "../types/activity.js",
+          "items": [
+            {
+              "name": "ActivityMessage",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": true
+        }
+      ],
+      "exports": [
+        {
+          "name": "jsonlWriter",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": false,
+          "kind": "variable"
+        }
+      ],
+      "functions": [],
+      "classes": [
+        "file:spindles-proxy/src/logging/jsonlWriter.ts:class:JSONLWriter:5"
+      ],
+      "topLevelReferences": [
+        "JSONLWriter"
+      ]
+    },
+    "file:spindles-proxy/src/logging/jsonlWriter.ts:class:JSONLWriter:5:method:init:9": {
+      "id": "file:spindles-proxy/src/logging/jsonlWriter.ts:class:JSONLWriter:5:method:init:9",
+      "type": "function",
+      "name": "init",
+      "filePath": "spindles-proxy/src/logging/jsonlWriter.ts",
+      "line": 9,
+      "endLine": 25,
+      "parentFileId": "file:spindles-proxy/src/logging/jsonlWriter.ts",
+      "parentClassId": "file:spindles-proxy/src/logging/jsonlWriter.ts:class:JSONLWriter:5",
+      "params": [],
+      "returnType": "void",
+      "isExported": false,
+      "isAsync": false,
+      "behavioral": null,
+      "source": "init(): void {\n    if (this.stream) return;\n\n    this.stream = createWriteStream(config.logFile, { flags: 'a' });\n\n    this.stream.on('error', (err) => {\n      console.error('[jsonl] Write error:', err);\n    });\n\n    for (const line of this.pending) {\n      this.stream.write(line);\n    }\n    this.pending = [];\n\n    process.on('beforeExit', () => this.close());\n    process.on('SIGINT', () => this.close());\n  }",
+      "references": [
+        "createWriteStream",
+        "config",
+        "console",
+        "err",
+        "line",
+        "process"
+      ]
+    },
+    "file:spindles-proxy/src/logging/jsonlWriter.ts:class:JSONLWriter:5:method:write:27": {
+      "id": "file:spindles-proxy/src/logging/jsonlWriter.ts:class:JSONLWriter:5:method:write:27",
+      "type": "function",
+      "name": "write",
+      "filePath": "spindles-proxy/src/logging/jsonlWriter.ts",
+      "line": 27,
+      "endLine": 35,
+      "parentFileId": "file:spindles-proxy/src/logging/jsonlWriter.ts",
+      "parentClassId": "file:spindles-proxy/src/logging/jsonlWriter.ts:class:JSONLWriter:5",
+      "params": [
+        {
+          "name": "activity",
+          "type": "import(\"/home/ridgetop/projects/forge/spindles-proxy/src/types/activity\").ActivityMessage",
+          "isOptional": false,
+          "defaultValue": null
+        }
+      ],
+      "returnType": "void",
+      "isExported": false,
+      "isAsync": false,
+      "behavioral": null,
+      "source": "write(activity: ActivityMessage): void {\n    const line = JSON.stringify(activity) + '\\n';\n\n    if (this.stream) {\n      this.stream.write(line);\n    } else {\n      this.pending.push(line);\n    }\n  }",
+      "references": [
+        "JSON",
+        "line"
+      ]
+    },
+    "file:spindles-proxy/src/logging/jsonlWriter.ts:class:JSONLWriter:5:method:close:37": {
+      "id": "file:spindles-proxy/src/logging/jsonlWriter.ts:class:JSONLWriter:5:method:close:37",
+      "type": "function",
+      "name": "close",
+      "filePath": "spindles-proxy/src/logging/jsonlWriter.ts",
+      "line": 37,
+      "endLine": 42,
+      "parentFileId": "file:spindles-proxy/src/logging/jsonlWriter.ts",
+      "parentClassId": "file:spindles-proxy/src/logging/jsonlWriter.ts:class:JSONLWriter:5",
+      "params": [],
+      "returnType": "void",
+      "isExported": false,
+      "isAsync": false,
+      "behavioral": null,
+      "source": "close(): void {\n    if (this.stream) {\n      this.stream.end();\n      this.stream = null;\n    }\n  }",
+      "references": []
+    },
+    "file:spindles-proxy/src/logging/jsonlWriter.ts:class:JSONLWriter:5": {
+      "id": "file:spindles-proxy/src/logging/jsonlWriter.ts:class:JSONLWriter:5",
+      "type": "class",
+      "name": "JSONLWriter",
+      "filePath": "spindles-proxy/src/logging/jsonlWriter.ts",
+      "line": 5,
+      "endLine": 43,
+      "parentFileId": "file:spindles-proxy/src/logging/jsonlWriter.ts",
+      "methods": [
+        "file:spindles-proxy/src/logging/jsonlWriter.ts:class:JSONLWriter:5:method:init:9",
+        "file:spindles-proxy/src/logging/jsonlWriter.ts:class:JSONLWriter:5:method:write:27",
+        "file:spindles-proxy/src/logging/jsonlWriter.ts:class:JSONLWriter:5:method:close:37"
+      ],
+      "properties": [
+        {
+          "name": "stream",
+          "type": "import(\"fs\").WriteStream",
+          "visibility": "private",
+          "isStatic": false,
+          "isReadonly": false
+        },
+        {
+          "name": "pending",
+          "type": "string[]",
+          "visibility": "private",
+          "isStatic": false,
+          "isReadonly": false
+        }
+      ],
+      "isExported": false,
+      "extends": null,
+      "implements": []
+    },
+    "file:spindles-proxy/src/proxy/anthropicProxyRoute.ts": {
+      "id": "file:spindles-proxy/src/proxy/anthropicProxyRoute.ts",
+      "type": "file",
+      "name": "anthropicProxyRoute.ts",
+      "filePath": "spindles-proxy/src/proxy/anthropicProxyRoute.ts",
+      "line": 1,
+      "endLine": 99,
+      "imports": [
+        {
+          "source": "express",
+          "items": [
+            {
+              "name": "Request",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            },
+            {
+              "name": "Response",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            },
+            {
+              "name": "NextFunction",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": true
+        },
+        {
+          "source": "../config.js",
+          "items": [
+            {
+              "name": "config",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": false
+        },
+        {
+          "source": "../session/index.js",
+          "items": [
+            {
+              "name": "sessionStore",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": false
+        },
+        {
+          "source": "./requestTap.js",
+          "items": [
+            {
+              "name": "extractToolResults",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": false
+        },
+        {
+          "source": "./responseTap.js",
+          "items": [
+            {
+              "name": "ResponseTap",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": false
+        },
+        {
+          "source": "../ws/index.js",
+          "items": [
+            {
+              "name": "broadcastHub",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": false
+        },
+        {
+          "source": "../logging/index.js",
+          "items": [
+            {
+              "name": "jsonlWriter",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": false
+        }
+      ],
+      "exports": [
+        {
+          "name": "anthropicProxyRoute",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": false,
+          "kind": "function"
+        }
+      ],
+      "functions": [
+        "file:spindles-proxy/src/proxy/anthropicProxyRoute.ts:fn:anthropicProxyRoute:9"
+      ],
+      "classes": [],
+      "topLevelReferences": []
+    },
+    "file:spindles-proxy/src/proxy/anthropicProxyRoute.ts:fn:anthropicProxyRoute:9": {
+      "id": "file:spindles-proxy/src/proxy/anthropicProxyRoute.ts:fn:anthropicProxyRoute:9",
+      "type": "function",
+      "name": "anthropicProxyRoute",
+      "filePath": "/home/ridgetop/projects/forge/spindles-proxy/src/proxy/anthropicProxyRoute.ts",
+      "line": 9,
+      "endLine": 98,
+      "parentFileId": "file:spindles-proxy/src/proxy/anthropicProxyRoute.ts",
+      "parentClassId": null,
+      "params": [
+        {
+          "name": "req",
+          "type": "import(\"/home/ridgetop/projects/forge/spindles-proxy/node_modules/.pnpm/@types+express@5.0.6/node_modules/@types/express/index\").Request<import(\"/home/ridgetop/projects/forge/spindles-proxy/node_modules/.pnpm/@types+express-serve-static-core@5.1.1/node_modules/@types/express-serve-static-core/index\").ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>",
+          "isOptional": false,
+          "defaultValue": null
+        },
+        {
+          "name": "res",
+          "type": "import(\"/home/ridgetop/projects/forge/spindles-proxy/node_modules/.pnpm/@types+express@5.0.6/node_modules/@types/express/index\").Response<any, Record<string, any>>",
+          "isOptional": false,
+          "defaultValue": null
+        },
+        {
+          "name": "_next",
+          "type": "import(\"/home/ridgetop/projects/forge/spindles-proxy/node_modules/.pnpm/@types+express@5.0.6/node_modules/@types/express/index\").NextFunction",
+          "isOptional": false,
+          "defaultValue": null
+        }
+      ],
+      "returnType": "Promise<void>",
+      "isExported": true,
+      "isAsync": true,
+      "behavioral": {
+        "summary": "Proxies requests to Anthropic API, extracts/broadcasts tool results, streams response with SSE tap.",
+        "source": "ai",
+        "analyzedAt": "2026-01-18T13:33:07.045Z",
+        "flags": {
+          "databaseRead": false,
+          "databaseWrite": false,
+          "httpCall": true,
+          "fileRead": false,
+          "fileWrite": false,
+          "sendsNotification": false,
+          "modifiesGlobalState": true,
+          "hasSideEffects": true
+        }
+      },
+      "source": "export async function anthropicProxyRoute(req: Request, res: Response, _next: NextFunction): Promise<void> {\n  const targetUrl = `${config.anthropicBaseUrl}${req.originalUrl}`;\n\n  try {\n    const headers: Record<string, string> = {};\n    for (const [key, value] of Object.entries(req.headers)) {\n      if (key.toLowerCase() === 'host') continue;\n      if (key.toLowerCase() === 'connection') continue;\n      if (key.toLowerCase() === 'content-length') continue;\n      if (typeof value === 'string') {\n        headers[key] = value;\n      } else if (Array.isArray(value)) {\n        headers[key] = value.join(', ');\n      }\n    }\n\n    // Read body using event-based approach (more reliable than async iteration)\n    const body = await new Promise<Buffer>((resolve, reject) => {\n      const chunks: Buffer[] = [];\n      req.on('data', (chunk: Buffer) => chunks.push(chunk));\n      req.on('end', () => resolve(Buffer.concat(chunks)));\n      req.on('error', reject);\n    });\n\n    const session = sessionStore.snapshot();\n    const toolResults = extractToolResults(body, session);\n    for (const tr of toolResults) {\n      broadcastHub.broadcast(tr);\n      jsonlWriter.write(tr);\n    }\n\n    const fetchResponse = await fetch(targetUrl, {\n      method: req.method,\n      headers,\n      body: ['GET', 'HEAD'].includes(req.method) ? undefined : new Uint8Array(body),\n    });\n\n    res.status(fetchResponse.status);\n\n    for (const [key, value] of fetchResponse.headers.entries()) {\n      if (key.toLowerCase() === 'transfer-encoding') continue;\n      if (key.toLowerCase() === 'content-encoding') continue;\n      res.setHeader(key, value);\n    }\n\n    if (!fetchResponse.body) {\n      res.end();\n      return;\n    }\n\n    const contentType = fetchResponse.headers.get('content-type') ?? '';\n    const isSSE = contentType.includes('text/event-stream');\n\n    const responseTap = isSSE ? new ResponseTap({ \n      getSession: () => session,\n      onActivity: (activity) => jsonlWriter.write(activity),\n    }) : null;\n    const reader = fetchResponse.body.getReader();\n    const decoder = new TextDecoder();\n\n    const pump = async (): Promise<void> => {\n      while (true) {\n        const { done, value } = await reader.read();\n        if (done) {\n          responseTap?.flush();\n          res.end();\n          return;\n        }\n\n        if (responseTap) {\n          responseTap.feed(decoder.decode(value, { stream: true }));\n        }\n\n        const ok = res.write(value);\n        if (!ok) {\n          await new Promise<void>((resolve) => res.once('drain', resolve));\n        }\n      }\n    };\n\n    await pump();\n  } catch (err) {\n    console.error('[proxy] Error:', err);\n    if (!res.headersSent) {\n      res.status(502).json({ error: 'Proxy error', message: String(err) });\n    } else {\n      res.end();\n    }\n  }\n}",
+      "references": [
+        "config",
+        "key",
+        "value",
+        "Object",
+        "headers",
+        "Array",
+        "Promise",
+        "chunks",
+        "chunk",
+        "resolve",
+        "Buffer",
+        "reject",
+        "sessionStore",
+        "extractToolResults",
+        "body",
+        "session",
+        "toolResults",
+        "broadcastHub",
+        "tr",
+        "jsonlWriter",
+        "fetch",
+        "targetUrl",
+        "Uint8Array",
+        "fetchResponse",
+        "contentType",
+        "isSSE",
+        "ResponseTap",
+        "activity",
+        "TextDecoder",
+        "done",
+        "reader",
+        "responseTap",
+        "decoder",
+        "ok",
+        "pump",
+        "console",
+        "err",
+        "String"
+      ]
+    },
+    "file:spindles-proxy/src/proxy/index.ts": {
+      "id": "file:spindles-proxy/src/proxy/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "spindles-proxy/src/proxy/index.ts",
+      "line": 1,
+      "endLine": 3,
+      "imports": [],
+      "exports": [
+        {
+          "name": "createProxyApp",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": false,
+          "kind": "function"
+        },
+        {
+          "name": "anthropicProxyRoute",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": false,
+          "kind": "function"
+        },
+        {
+          "name": "createProxyApp",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": false,
+          "kind": "reexport",
+          "source": "./proxyServer.js"
+        },
+        {
+          "name": "anthropicProxyRoute",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": false,
+          "kind": "reexport",
+          "source": "./anthropicProxyRoute.js"
+        }
+      ],
+      "functions": [],
+      "classes": [],
+      "topLevelReferences": []
+    },
+    "file:spindles-proxy/src/proxy/proxyServer.ts": {
+      "id": "file:spindles-proxy/src/proxy/proxyServer.ts",
+      "type": "file",
+      "name": "proxyServer.ts",
+      "filePath": "spindles-proxy/src/proxy/proxyServer.ts",
+      "line": 1,
+      "endLine": 11,
+      "imports": [
+        {
+          "source": "express",
+          "items": [
+            {
+              "name": "express",
+              "alias": null,
+              "isDefault": true,
+              "isNamespace": false
+            },
+            {
+              "name": "Express",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": false
+        },
+        {
+          "source": "./anthropicProxyRoute.js",
+          "items": [
+            {
+              "name": "anthropicProxyRoute",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": false
+        }
+      ],
+      "exports": [
+        {
+          "name": "createProxyApp",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": false,
+          "kind": "function"
+        }
+      ],
+      "functions": [
+        "file:spindles-proxy/src/proxy/proxyServer.ts:fn:createProxyApp:4"
+      ],
+      "classes": [],
+      "topLevelReferences": []
+    },
+    "file:spindles-proxy/src/proxy/proxyServer.ts:fn:createProxyApp:4": {
+      "id": "file:spindles-proxy/src/proxy/proxyServer.ts:fn:createProxyApp:4",
+      "type": "function",
+      "name": "createProxyApp",
+      "filePath": "/home/ridgetop/projects/forge/spindles-proxy/src/proxy/proxyServer.ts",
+      "line": 4,
+      "endLine": 10,
+      "parentFileId": "file:spindles-proxy/src/proxy/proxyServer.ts",
+      "parentClassId": null,
+      "params": [],
+      "returnType": "import(\"/home/ridgetop/projects/forge/spindles-proxy/node_modules/.pnpm/@types+express@5.0.6/node_modules/@types/express/index\").Express",
+      "isExported": true,
+      "isAsync": false,
+      "behavioral": {
+        "summary": "Creates an Express app and configures a proxy route for /v1/* paths.",
+        "source": "ai",
+        "analyzedAt": "2026-01-18T13:33:04.728Z",
+        "flags": {
+          "databaseRead": false,
+          "databaseWrite": false,
+          "httpCall": false,
+          "fileRead": false,
+          "fileWrite": false,
+          "sendsNotification": false,
+          "modifiesGlobalState": false,
+          "hasSideEffects": false
+        }
+      },
+      "source": "export function createProxyApp(): Express {\n  const app = express();\n\n  app.all('/v1/*', anthropicProxyRoute);\n\n  return app;\n}",
+      "references": [
+        "express",
+        "app",
+        "anthropicProxyRoute"
+      ]
+    },
+    "file:spindles-proxy/src/proxy/requestTap.ts": {
+      "id": "file:spindles-proxy/src/proxy/requestTap.ts",
+      "type": "file",
+      "name": "requestTap.ts",
+      "filePath": "spindles-proxy/src/proxy/requestTap.ts",
+      "line": 1,
+      "endLine": 56,
+      "imports": [
+        {
+          "source": "../types/activity.js",
+          "items": [
+            {
+              "name": "SirkSession",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            },
+            {
+              "name": "ToolResultActivity",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": true
+        }
+      ],
+      "exports": [
+        {
+          "name": "extractToolResults",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": false,
+          "kind": "function"
+        }
+      ],
+      "functions": [
+        "file:spindles-proxy/src/proxy/requestTap.ts:fn:extractToolResults:19"
+      ],
+      "classes": [],
+      "topLevelReferences": []
+    },
+    "file:spindles-proxy/src/proxy/requestTap.ts:fn:extractToolResults:19": {
+      "id": "file:spindles-proxy/src/proxy/requestTap.ts:fn:extractToolResults:19",
+      "type": "function",
+      "name": "extractToolResults",
+      "filePath": "/home/ridgetop/projects/forge/spindles-proxy/src/proxy/requestTap.ts",
+      "line": 19,
+      "endLine": 55,
+      "parentFileId": "file:spindles-proxy/src/proxy/requestTap.ts",
+      "parentClassId": null,
+      "params": [
+        {
+          "name": "body",
+          "type": "Buffer",
+          "isOptional": false,
+          "defaultValue": null
+        },
+        {
+          "name": "session",
+          "type": "import(\"/home/ridgetop/projects/forge/spindles-proxy/src/types/activity\").SirkSession",
+          "isOptional": false,
+          "defaultValue": null
+        }
+      ],
+      "returnType": "import(\"/home/ridgetop/projects/forge/spindles-proxy/src/types/activity\").ToolResultActivity[]",
+      "isExported": true,
+      "isAsync": false,
+      "behavioral": {
+        "summary": "Extracts tool result activities from JSON request body messages",
+        "source": "ai",
+        "analyzedAt": "2026-01-18T13:33:04.782Z",
+        "flags": {
+          "databaseRead": false,
+          "databaseWrite": false,
+          "httpCall": false,
+          "fileRead": false,
+          "fileWrite": false,
+          "sendsNotification": false,
+          "modifiesGlobalState": false,
+          "hasSideEffects": false
+        }
+      },
+      "source": "export function extractToolResults(\n  body: Buffer,\n  session: SirkSession | null\n): ToolResultActivity[] {\n  const activities: ToolResultActivity[] = [];\n\n  try {\n    const parsed = JSON.parse(body.toString('utf-8')) as MessagesRequest;\n    if (!parsed.messages || !Array.isArray(parsed.messages)) {\n      return activities;\n    }\n\n    const timestamp = new Date().toISOString();\n\n    for (const message of parsed.messages) {\n      if (!Array.isArray(message.content)) continue;\n\n      for (const block of message.content) {\n        if (block && typeof block === 'object' && 'type' in block && block.type === 'tool_result') {\n          const tr = block as ToolResultContent;\n          activities.push({\n            type: 'tool_result',\n            toolId: tr.tool_use_id,\n            content: tr.content,\n            isError: tr.is_error ?? false,\n            timestamp,\n            session,\n          });\n        }\n      }\n    }\n  } catch {\n    // Not JSON or malformed - ignore\n  }\n\n  return activities;\n}",
+      "references": [
+        "JSON",
+        "parsed",
+        "Array",
+        "activities",
+        "Date",
+        "message",
+        "block",
+        "tr",
+        "timestamp"
+      ]
+    },
+    "file:spindles-proxy/src/proxy/responseTap.ts": {
+      "id": "file:spindles-proxy/src/proxy/responseTap.ts",
+      "type": "file",
+      "name": "responseTap.ts",
+      "filePath": "spindles-proxy/src/proxy/responseTap.ts",
+      "line": 1,
+      "endLine": 56,
+      "imports": [
+        {
+          "source": "../types/anthropic.js",
+          "items": [
+            {
+              "name": "AnthropicSSEEvent",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": true
+        },
+        {
+          "source": "../types/activity.js",
+          "items": [
+            {
+              "name": "ActivityMessage",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            },
+            {
+              "name": "SirkSession",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": true
+        },
+        {
+          "source": "../sse/sseParser.js",
+          "items": [
+            {
+              "name": "SSEParser",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": false
+        },
+        {
+          "source": "../sse/blockAssembler.js",
+          "items": [
+            {
+              "name": "BlockAssembler",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": false
+        },
+        {
+          "source": "../ws/index.js",
+          "items": [
+            {
+              "name": "broadcastHub",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": false
+        }
+      ],
+      "exports": [
+        {
+          "name": "ResponseTapOptions",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "interface"
+        },
+        {
+          "name": "ResponseTap",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": false,
+          "kind": "class"
+        }
+      ],
+      "functions": [],
+      "classes": [
+        "file:spindles-proxy/src/proxy/responseTap.ts:class:ResponseTap:12"
+      ],
+      "topLevelReferences": []
+    },
+    "file:spindles-proxy/src/proxy/responseTap.ts:class:ResponseTap:12:method:handleSSEEvent:35": {
+      "id": "file:spindles-proxy/src/proxy/responseTap.ts:class:ResponseTap:12:method:handleSSEEvent:35",
+      "type": "function",
+      "name": "handleSSEEvent",
+      "filePath": "spindles-proxy/src/proxy/responseTap.ts",
+      "line": 35,
+      "endLine": 42,
+      "parentFileId": "file:spindles-proxy/src/proxy/responseTap.ts",
+      "parentClassId": "file:spindles-proxy/src/proxy/responseTap.ts:class:ResponseTap:12",
+      "params": [
+        {
+          "name": "data",
+          "type": "string",
+          "isOptional": false,
+          "defaultValue": null
+        }
+      ],
+      "returnType": "void",
+      "isExported": false,
+      "isAsync": false,
+      "behavioral": null,
+      "source": "private handleSSEEvent(data: string): void {\n    try {\n      const parsed = JSON.parse(data) as AnthropicSSEEvent;\n      this.assembler.process(parsed);\n    } catch {\n      // Not valid JSON - ignore\n    }\n  }",
+      "references": [
+        "JSON",
+        "parsed"
+      ]
+    },
+    "file:spindles-proxy/src/proxy/responseTap.ts:class:ResponseTap:12:method:feed:44": {
+      "id": "file:spindles-proxy/src/proxy/responseTap.ts:class:ResponseTap:12:method:feed:44",
+      "type": "function",
+      "name": "feed",
+      "filePath": "spindles-proxy/src/proxy/responseTap.ts",
+      "line": 44,
+      "endLine": 46,
+      "parentFileId": "file:spindles-proxy/src/proxy/responseTap.ts",
+      "parentClassId": "file:spindles-proxy/src/proxy/responseTap.ts:class:ResponseTap:12",
+      "params": [
+        {
+          "name": "chunk",
+          "type": "string",
+          "isOptional": false,
+          "defaultValue": null
+        }
+      ],
+      "returnType": "void",
+      "isExported": false,
+      "isAsync": false,
+      "behavioral": null,
+      "source": "feed(chunk: string): void {\n    this.parser.feed(chunk);\n  }",
+      "references": []
+    },
+    "file:spindles-proxy/src/proxy/responseTap.ts:class:ResponseTap:12:method:flush:48": {
+      "id": "file:spindles-proxy/src/proxy/responseTap.ts:class:ResponseTap:12:method:flush:48",
+      "type": "function",
+      "name": "flush",
+      "filePath": "spindles-proxy/src/proxy/responseTap.ts",
+      "line": 48,
+      "endLine": 50,
+      "parentFileId": "file:spindles-proxy/src/proxy/responseTap.ts",
+      "parentClassId": "file:spindles-proxy/src/proxy/responseTap.ts:class:ResponseTap:12",
+      "params": [],
+      "returnType": "void",
+      "isExported": false,
+      "isAsync": false,
+      "behavioral": null,
+      "source": "flush(): void {\n    this.parser.flush();\n  }",
+      "references": []
+    },
+    "file:spindles-proxy/src/proxy/responseTap.ts:class:ResponseTap:12:method:reset:52": {
+      "id": "file:spindles-proxy/src/proxy/responseTap.ts:class:ResponseTap:12:method:reset:52",
+      "type": "function",
+      "name": "reset",
+      "filePath": "spindles-proxy/src/proxy/responseTap.ts",
+      "line": 52,
+      "endLine": 54,
+      "parentFileId": "file:spindles-proxy/src/proxy/responseTap.ts",
+      "parentClassId": "file:spindles-proxy/src/proxy/responseTap.ts:class:ResponseTap:12",
+      "params": [],
+      "returnType": "void",
+      "isExported": false,
+      "isAsync": false,
+      "behavioral": null,
+      "source": "reset(): void {\n    this.assembler.reset();\n  }",
+      "references": []
+    },
+    "file:spindles-proxy/src/proxy/responseTap.ts:class:ResponseTap:12": {
+      "id": "file:spindles-proxy/src/proxy/responseTap.ts:class:ResponseTap:12",
+      "type": "class",
+      "name": "ResponseTap",
+      "filePath": "spindles-proxy/src/proxy/responseTap.ts",
+      "line": 12,
+      "endLine": 55,
+      "parentFileId": "file:spindles-proxy/src/proxy/responseTap.ts",
+      "methods": [
+        "file:spindles-proxy/src/proxy/responseTap.ts:class:ResponseTap:12:method:handleSSEEvent:35",
+        "file:spindles-proxy/src/proxy/responseTap.ts:class:ResponseTap:12:method:feed:44",
+        "file:spindles-proxy/src/proxy/responseTap.ts:class:ResponseTap:12:method:flush:48",
+        "file:spindles-proxy/src/proxy/responseTap.ts:class:ResponseTap:12:method:reset:52"
+      ],
+      "properties": [
+        {
+          "name": "parser",
+          "type": "import(\"/home/ridgetop/projects/forge/spindles-proxy/src/sse/sseParser\").SSEParser",
+          "visibility": "private",
+          "isStatic": false,
+          "isReadonly": false
+        },
+        {
+          "name": "assembler",
+          "type": "import(\"/home/ridgetop/projects/forge/spindles-proxy/src/sse/blockAssembler\").BlockAssembler",
+          "visibility": "private",
+          "isStatic": false,
+          "isReadonly": false
+        },
+        {
+          "name": "snapshotSession",
+          "type": "import(\"/home/ridgetop/projects/forge/spindles-proxy/src/types/activity\").SirkSession",
+          "visibility": "private",
+          "isStatic": false,
+          "isReadonly": false
+        },
+        {
+          "name": "onActivity",
+          "type": "(activity: import(\"/home/ridgetop/projects/forge/spindles-proxy/src/types/activity\").ActivityMessage) => void",
+          "visibility": "private",
+          "isStatic": false,
+          "isReadonly": false
+        }
+      ],
+      "isExported": true,
+      "extends": null,
+      "implements": []
+    },
+    "file:spindles-proxy/src/session/index.ts": {
+      "id": "file:spindles-proxy/src/session/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "spindles-proxy/src/session/index.ts",
+      "line": 1,
+      "endLine": 3,
+      "imports": [],
+      "exports": [
+        {
+          "name": "sessionRouter",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": false,
+          "kind": "variable"
+        },
+        {
+          "name": "sessionStore",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": false,
+          "kind": "variable"
+        },
+        {
+          "name": "sessionRouter",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": false,
+          "kind": "reexport",
+          "source": "./sessionRoutes.js"
+        },
+        {
+          "name": "*",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": false,
+          "kind": "reexport",
+          "source": "./sessionStore.js"
+        }
+      ],
+      "functions": [],
+      "classes": [],
+      "topLevelReferences": []
+    },
+    "file:spindles-proxy/src/session/sessionRoutes.ts": {
+      "id": "file:spindles-proxy/src/session/sessionRoutes.ts",
+      "type": "file",
+      "name": "sessionRoutes.ts",
+      "filePath": "spindles-proxy/src/session/sessionRoutes.ts",
+      "line": 1,
+      "endLine": 61,
+      "imports": [
+        {
+          "source": "express",
+          "items": [
+            {
+              "name": "Router",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            },
+            {
+              "name": "Router",
+              "alias": "RouterType",
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": false
+        },
+        {
+          "source": "./sessionStore.js",
+          "items": [
+            {
+              "name": "sessionStore",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": true
+            }
+          ],
+          "isTypeOnly": false
+        },
+        {
+          "source": "../types/activity.js",
+          "items": [
+            {
+              "name": "SirkSession",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": true
+        }
+      ],
+      "exports": [
+        {
+          "name": "sessionRouter",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": false,
+          "kind": "variable"
+        }
+      ],
+      "functions": [],
+      "classes": [],
+      "topLevelReferences": [
+        "sessionRouter",
+        "req",
+        "body",
+        "chunk",
+        "JSON",
+        "next",
+        "runName",
+        "instanceNumber",
+        "totalInstances",
+        "project",
+        "res",
+        "session",
+        "console"
+      ]
+    },
+    "file:spindles-proxy/src/session/sessionStore.ts": {
+      "id": "file:spindles-proxy/src/session/sessionStore.ts",
+      "type": "file",
+      "name": "sessionStore.ts",
+      "filePath": "spindles-proxy/src/session/sessionStore.ts",
+      "line": 1,
+      "endLine": 20,
+      "imports": [
+        {
+          "source": "../types/activity.js",
+          "items": [
+            {
+              "name": "SirkSession",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": true
+        }
+      ],
+      "exports": [
+        {
+          "name": "getCurrent",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": false,
+          "kind": "function"
+        },
+        {
+          "name": "setCurrent",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": false,
+          "kind": "function"
+        },
+        {
+          "name": "clear",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": false,
+          "kind": "function"
+        },
+        {
+          "name": "snapshot",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": false,
+          "kind": "function"
+        }
+      ],
+      "functions": [
+        "file:spindles-proxy/src/session/sessionStore.ts:fn:getCurrent:5",
+        "file:spindles-proxy/src/session/sessionStore.ts:fn:setCurrent:9",
+        "file:spindles-proxy/src/session/sessionStore.ts:fn:clear:13",
+        "file:spindles-proxy/src/session/sessionStore.ts:fn:snapshot:17"
+      ],
+      "classes": [],
+      "topLevelReferences": []
+    },
+    "file:spindles-proxy/src/session/sessionStore.ts:fn:getCurrent:5": {
+      "id": "file:spindles-proxy/src/session/sessionStore.ts:fn:getCurrent:5",
+      "type": "function",
+      "name": "getCurrent",
+      "filePath": "/home/ridgetop/projects/forge/spindles-proxy/src/session/sessionStore.ts",
+      "line": 5,
+      "endLine": 7,
+      "parentFileId": "file:spindles-proxy/src/session/sessionStore.ts",
+      "parentClassId": null,
+      "params": [],
+      "returnType": "import(\"/home/ridgetop/projects/forge/spindles-proxy/src/types/activity\").SirkSession",
+      "isExported": true,
+      "isAsync": false,
+      "behavioral": {
+        "summary": "Returns the current session or null.",
+        "source": "ai",
+        "analyzedAt": "2026-01-18T13:33:02.227Z",
+        "flags": {
+          "databaseRead": false,
+          "databaseWrite": false,
+          "httpCall": false,
+          "fileRead": false,
+          "fileWrite": false,
+          "sendsNotification": false,
+          "modifiesGlobalState": false,
+          "hasSideEffects": false
+        }
+      },
+      "source": "export function getCurrent(): SirkSession | null {\n  return currentSession;\n}",
+      "references": [
+        "currentSession"
+      ]
+    },
+    "file:spindles-proxy/src/session/sessionStore.ts:fn:setCurrent:9": {
+      "id": "file:spindles-proxy/src/session/sessionStore.ts:fn:setCurrent:9",
+      "type": "function",
+      "name": "setCurrent",
+      "filePath": "/home/ridgetop/projects/forge/spindles-proxy/src/session/sessionStore.ts",
+      "line": 9,
+      "endLine": 11,
+      "parentFileId": "file:spindles-proxy/src/session/sessionStore.ts",
+      "parentClassId": null,
+      "params": [
+        {
+          "name": "session",
+          "type": "import(\"/home/ridgetop/projects/forge/spindles-proxy/src/types/activity\").SirkSession",
+          "isOptional": false,
+          "defaultValue": null
+        }
+      ],
+      "returnType": "void",
+      "isExported": true,
+      "isAsync": false,
+      "behavioral": {
+        "summary": "Sets the current session to the provided SirkSession object.",
+        "source": "ai",
+        "analyzedAt": "2026-01-18T13:33:01.969Z",
+        "flags": {
+          "databaseRead": false,
+          "databaseWrite": false,
+          "httpCall": false,
+          "fileRead": false,
+          "fileWrite": false,
+          "sendsNotification": false,
+          "modifiesGlobalState": true,
+          "hasSideEffects": true
+        }
+      },
+      "source": "export function setCurrent(session: SirkSession): void {\n  currentSession = session;\n}",
+      "references": [
+        "currentSession"
+      ]
+    },
+    "file:spindles-proxy/src/session/sessionStore.ts:fn:clear:13": {
+      "id": "file:spindles-proxy/src/session/sessionStore.ts:fn:clear:13",
+      "type": "function",
+      "name": "clear",
+      "filePath": "/home/ridgetop/projects/forge/spindles-proxy/src/session/sessionStore.ts",
+      "line": 13,
+      "endLine": 15,
+      "parentFileId": "file:spindles-proxy/src/session/sessionStore.ts",
+      "parentClassId": null,
+      "params": [],
+      "returnType": "void",
+      "isExported": true,
+      "isAsync": false,
+      "behavioral": {
+        "summary": "Clears the current session by setting it to null.",
+        "source": "ai",
+        "analyzedAt": "2026-01-18T13:33:01.539Z",
+        "flags": {
+          "databaseRead": false,
+          "databaseWrite": false,
+          "httpCall": false,
+          "fileRead": false,
+          "fileWrite": false,
+          "sendsNotification": false,
+          "modifiesGlobalState": true,
+          "hasSideEffects": true
+        }
+      },
+      "source": "export function clear(): void {\n  currentSession = null;\n}",
+      "references": [
+        "currentSession"
+      ]
+    },
+    "file:spindles-proxy/src/session/sessionStore.ts:fn:snapshot:17": {
+      "id": "file:spindles-proxy/src/session/sessionStore.ts:fn:snapshot:17",
+      "type": "function",
+      "name": "snapshot",
+      "filePath": "/home/ridgetop/projects/forge/spindles-proxy/src/session/sessionStore.ts",
+      "line": 17,
+      "endLine": 19,
+      "parentFileId": "file:spindles-proxy/src/session/sessionStore.ts",
+      "parentClassId": null,
+      "params": [],
+      "returnType": "import(\"/home/ridgetop/projects/forge/spindles-proxy/src/types/activity\").SirkSession",
+      "isExported": true,
+      "isAsync": false,
+      "behavioral": {
+        "summary": "Returns a shallow copy of the current session or null if none exists.",
+        "source": "ai",
+        "analyzedAt": "2026-01-18T13:33:02.674Z",
+        "flags": {
+          "databaseRead": false,
+          "databaseWrite": false,
+          "httpCall": false,
+          "fileRead": false,
+          "fileWrite": false,
+          "sendsNotification": false,
+          "modifiesGlobalState": false,
+          "hasSideEffects": false
+        }
+      },
+      "source": "export function snapshot(): SirkSession | null {\n  return currentSession ? { ...currentSession } : null;\n}",
+      "references": [
+        "currentSession"
+      ]
+    },
+    "file:spindles-proxy/src/sse/blockAssembler.ts": {
+      "id": "file:spindles-proxy/src/sse/blockAssembler.ts",
+      "type": "file",
+      "name": "blockAssembler.ts",
+      "filePath": "spindles-proxy/src/sse/blockAssembler.ts",
+      "line": 1,
+      "endLine": 130,
+      "imports": [
+        {
+          "source": "../types/anthropic.js",
+          "items": [
+            {
+              "name": "AnthropicSSEEvent",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            },
+            {
+              "name": "ContentBlockStart",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            },
+            {
+              "name": "ContentBlockDelta",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": true
+        },
+        {
+          "source": "../types/activity.js",
+          "items": [
+            {
+              "name": "ActivityMessage",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            },
+            {
+              "name": "SirkSession",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": true
+        }
+      ],
+      "exports": [
+        {
+          "name": "ActivityCallback",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "type"
+        },
+        {
+          "name": "BlockAssembler",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": false,
+          "kind": "class"
+        }
+      ],
+      "functions": [],
+      "classes": [
+        "file:spindles-proxy/src/sse/blockAssembler.ts:class:BlockAssembler:14"
+      ],
+      "topLevelReferences": []
+    },
+    "file:spindles-proxy/src/sse/blockAssembler.ts:class:BlockAssembler:14:method:process:24": {
+      "id": "file:spindles-proxy/src/sse/blockAssembler.ts:class:BlockAssembler:14:method:process:24",
+      "type": "function",
+      "name": "process",
+      "filePath": "spindles-proxy/src/sse/blockAssembler.ts",
+      "line": 24,
+      "endLine": 39,
+      "parentFileId": "file:spindles-proxy/src/sse/blockAssembler.ts",
+      "parentClassId": "file:spindles-proxy/src/sse/blockAssembler.ts:class:BlockAssembler:14",
+      "params": [
+        {
+          "name": "event",
+          "type": "import(\"/home/ridgetop/projects/forge/spindles-proxy/src/types/anthropic\").AnthropicSSEEvent",
+          "isOptional": false,
+          "defaultValue": null
+        }
+      ],
+      "returnType": "void",
+      "isExported": false,
+      "isAsync": false,
+      "behavioral": null,
+      "source": "process(event: AnthropicSSEEvent): void {\n    switch (event.type) {\n      case 'content_block_start':\n        this.handleBlockStart(event);\n        break;\n      case 'content_block_delta':\n        this.handleBlockDelta(event);\n        break;\n      case 'content_block_stop':\n        this.handleBlockStop(event.index);\n        break;\n      case 'error':\n        this.emitError(event.error.message, event.error.type);\n        break;\n    }\n  }",
+      "references": []
+    },
+    "file:spindles-proxy/src/sse/blockAssembler.ts:class:BlockAssembler:14:method:handleBlockStart:41": {
+      "id": "file:spindles-proxy/src/sse/blockAssembler.ts:class:BlockAssembler:14:method:handleBlockStart:41",
+      "type": "function",
+      "name": "handleBlockStart",
+      "filePath": "spindles-proxy/src/sse/blockAssembler.ts",
+      "line": 41,
+      "endLine": 60,
+      "parentFileId": "file:spindles-proxy/src/sse/blockAssembler.ts",
+      "parentClassId": "file:spindles-proxy/src/sse/blockAssembler.ts:class:BlockAssembler:14",
+      "params": [
+        {
+          "name": "event",
+          "type": "import(\"/home/ridgetop/projects/forge/spindles-proxy/src/types/anthropic\").ContentBlockStart",
+          "isOptional": false,
+          "defaultValue": null
+        }
+      ],
+      "returnType": "void",
+      "isExported": false,
+      "isAsync": false,
+      "behavioral": null,
+      "source": "private handleBlockStart(event: ContentBlockStart): void {\n    const block = event.content_block;\n    const pending: PendingBlock = {\n      index: event.index,\n      type: block.type,\n      content: '',\n    };\n\n    if (block.type === 'thinking') {\n      pending.content = block.thinking;\n    } else if (block.type === 'text') {\n      pending.content = block.text;\n    } else if (block.type === 'tool_use') {\n      pending.toolId = block.id;\n      pending.toolName = block.name;\n      pending.content = '';\n    }\n\n    this.blocks.set(event.index, pending);\n  }",
+      "references": [
+        "block",
+        "pending"
+      ]
+    },
+    "file:spindles-proxy/src/sse/blockAssembler.ts:class:BlockAssembler:14:method:handleBlockDelta:62": {
+      "id": "file:spindles-proxy/src/sse/blockAssembler.ts:class:BlockAssembler:14:method:handleBlockDelta:62",
+      "type": "function",
+      "name": "handleBlockDelta",
+      "filePath": "spindles-proxy/src/sse/blockAssembler.ts",
+      "line": 62,
+      "endLine": 74,
+      "parentFileId": "file:spindles-proxy/src/sse/blockAssembler.ts",
+      "parentClassId": "file:spindles-proxy/src/sse/blockAssembler.ts:class:BlockAssembler:14",
+      "params": [
+        {
+          "name": "event",
+          "type": "import(\"/home/ridgetop/projects/forge/spindles-proxy/src/types/anthropic\").ContentBlockDelta",
+          "isOptional": false,
+          "defaultValue": null
+        }
+      ],
+      "returnType": "void",
+      "isExported": false,
+      "isAsync": false,
+      "behavioral": null,
+      "source": "private handleBlockDelta(event: ContentBlockDelta): void {\n    const pending = this.blocks.get(event.index);\n    if (!pending) return;\n\n    const delta = event.delta;\n    if (delta.type === 'thinking_delta') {\n      pending.content += delta.thinking;\n    } else if (delta.type === 'text_delta') {\n      pending.content += delta.text;\n    } else if (delta.type === 'input_json_delta') {\n      pending.content += delta.partial_json;\n    }\n  }",
+      "references": [
+        "pending",
+        "delta"
+      ]
+    },
+    "file:spindles-proxy/src/sse/blockAssembler.ts:class:BlockAssembler:14:method:handleBlockStop:76": {
+      "id": "file:spindles-proxy/src/sse/blockAssembler.ts:class:BlockAssembler:14:method:handleBlockStop:76",
+      "type": "function",
+      "name": "handleBlockStop",
+      "filePath": "spindles-proxy/src/sse/blockAssembler.ts",
+      "line": 76,
+      "endLine": 114,
+      "parentFileId": "file:spindles-proxy/src/sse/blockAssembler.ts",
+      "parentClassId": "file:spindles-proxy/src/sse/blockAssembler.ts:class:BlockAssembler:14",
+      "params": [
+        {
+          "name": "index",
+          "type": "number",
+          "isOptional": false,
+          "defaultValue": null
+        }
+      ],
+      "returnType": "void",
+      "isExported": false,
+      "isAsync": false,
+      "behavioral": null,
+      "source": "private handleBlockStop(index: number): void {\n    const pending = this.blocks.get(index);\n    if (!pending) return;\n\n    this.blocks.delete(index);\n    const timestamp = new Date().toISOString();\n    const session = this.getSession();\n\n    if (pending.type === 'thinking') {\n      this.onActivity({\n        type: 'thinking',\n        content: pending.content,\n        timestamp,\n        session,\n      });\n    } else if (pending.type === 'text') {\n      this.onActivity({\n        type: 'text',\n        content: pending.content,\n        timestamp,\n        session,\n      });\n    } else if (pending.type === 'tool_use') {\n      let input: unknown;\n      try {\n        input = JSON.parse(pending.content);\n      } catch {\n        input = pending.content;\n      }\n      this.onActivity({\n        type: 'tool_call',\n        toolName: pending.toolName!,\n        toolId: pending.toolId!,\n        input,\n        timestamp,\n        session,\n      });\n    }\n  }",
+      "references": [
+        "pending",
+        "Date",
+        "timestamp",
+        "session",
+        "input",
+        "JSON"
+      ]
+    },
+    "file:spindles-proxy/src/sse/blockAssembler.ts:class:BlockAssembler:14:method:emitError:116": {
+      "id": "file:spindles-proxy/src/sse/blockAssembler.ts:class:BlockAssembler:14:method:emitError:116",
+      "type": "function",
+      "name": "emitError",
+      "filePath": "spindles-proxy/src/sse/blockAssembler.ts",
+      "line": 116,
+      "endLine": 124,
+      "parentFileId": "file:spindles-proxy/src/sse/blockAssembler.ts",
+      "parentClassId": "file:spindles-proxy/src/sse/blockAssembler.ts:class:BlockAssembler:14",
+      "params": [
+        {
+          "name": "message",
+          "type": "string",
+          "isOptional": false,
+          "defaultValue": null
+        },
+        {
+          "name": "code",
+          "type": "string",
+          "isOptional": true,
+          "defaultValue": null
+        }
+      ],
+      "returnType": "void",
+      "isExported": false,
+      "isAsync": false,
+      "behavioral": null,
+      "source": "private emitError(message: string, code?: string): void {\n    this.onActivity({\n      type: 'error',\n      message,\n      code,\n      timestamp: new Date().toISOString(),\n      session: this.getSession(),\n    });\n  }",
+      "references": [
+        "Date"
+      ]
+    },
+    "file:spindles-proxy/src/sse/blockAssembler.ts:class:BlockAssembler:14:method:reset:126": {
+      "id": "file:spindles-proxy/src/sse/blockAssembler.ts:class:BlockAssembler:14:method:reset:126",
+      "type": "function",
+      "name": "reset",
+      "filePath": "spindles-proxy/src/sse/blockAssembler.ts",
+      "line": 126,
+      "endLine": 128,
+      "parentFileId": "file:spindles-proxy/src/sse/blockAssembler.ts",
+      "parentClassId": "file:spindles-proxy/src/sse/blockAssembler.ts:class:BlockAssembler:14",
+      "params": [],
+      "returnType": "void",
+      "isExported": false,
+      "isAsync": false,
+      "behavioral": null,
+      "source": "reset(): void {\n    this.blocks.clear();\n  }",
+      "references": []
+    },
+    "file:spindles-proxy/src/sse/blockAssembler.ts:class:BlockAssembler:14": {
+      "id": "file:spindles-proxy/src/sse/blockAssembler.ts:class:BlockAssembler:14",
+      "type": "class",
+      "name": "BlockAssembler",
+      "filePath": "spindles-proxy/src/sse/blockAssembler.ts",
+      "line": 14,
+      "endLine": 129,
+      "parentFileId": "file:spindles-proxy/src/sse/blockAssembler.ts",
+      "methods": [
+        "file:spindles-proxy/src/sse/blockAssembler.ts:class:BlockAssembler:14:method:process:24",
+        "file:spindles-proxy/src/sse/blockAssembler.ts:class:BlockAssembler:14:method:handleBlockStart:41",
+        "file:spindles-proxy/src/sse/blockAssembler.ts:class:BlockAssembler:14:method:handleBlockDelta:62",
+        "file:spindles-proxy/src/sse/blockAssembler.ts:class:BlockAssembler:14:method:handleBlockStop:76",
+        "file:spindles-proxy/src/sse/blockAssembler.ts:class:BlockAssembler:14:method:emitError:116",
+        "file:spindles-proxy/src/sse/blockAssembler.ts:class:BlockAssembler:14:method:reset:126"
+      ],
+      "properties": [
+        {
+          "name": "blocks",
+          "type": "Map<number, PendingBlock>",
+          "visibility": "private",
+          "isStatic": false,
+          "isReadonly": false
+        },
+        {
+          "name": "onActivity",
+          "type": "import(\"/home/ridgetop/projects/forge/spindles-proxy/src/sse/blockAssembler\").ActivityCallback",
+          "visibility": "private",
+          "isStatic": false,
+          "isReadonly": false
+        },
+        {
+          "name": "getSession",
+          "type": "() => import(\"/home/ridgetop/projects/forge/spindles-proxy/src/types/activity\").SirkSession",
+          "visibility": "private",
+          "isStatic": false,
+          "isReadonly": false
+        }
+      ],
+      "isExported": true,
+      "extends": null,
+      "implements": []
+    },
+    "file:spindles-proxy/src/sse/index.ts": {
+      "id": "file:spindles-proxy/src/sse/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "spindles-proxy/src/sse/index.ts",
+      "line": 1,
+      "endLine": 3,
+      "imports": [],
+      "exports": [
+        {
+          "name": "SSEParser",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": false,
+          "kind": "class"
+        },
+        {
+          "name": "SSEEvent",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "interface"
+        },
+        {
+          "name": "SSEEventCallback",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "type"
+        },
+        {
+          "name": "BlockAssembler",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": false,
+          "kind": "class"
+        },
+        {
+          "name": "ActivityCallback",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "type"
+        },
+        {
+          "name": "SSEParser",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": false,
+          "kind": "reexport",
+          "source": "./sseParser.js"
+        },
+        {
+          "name": "SSEEvent",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": false,
+          "kind": "reexport",
+          "source": "./sseParser.js"
+        },
+        {
+          "name": "SSEEventCallback",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": false,
+          "kind": "reexport",
+          "source": "./sseParser.js"
+        },
+        {
+          "name": "BlockAssembler",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": false,
+          "kind": "reexport",
+          "source": "./blockAssembler.js"
+        },
+        {
+          "name": "ActivityCallback",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": false,
+          "kind": "reexport",
+          "source": "./blockAssembler.js"
+        }
+      ],
+      "functions": [],
+      "classes": [],
+      "topLevelReferences": []
+    },
+    "file:spindles-proxy/src/sse/sseParser.ts": {
+      "id": "file:spindles-proxy/src/sse/sseParser.ts",
+      "type": "file",
+      "name": "sseParser.ts",
+      "filePath": "spindles-proxy/src/sse/sseParser.ts",
+      "line": 1,
+      "endLine": 102,
+      "imports": [],
+      "exports": [
+        {
+          "name": "SSEEvent",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "interface"
+        },
+        {
+          "name": "SSEEventCallback",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "type"
+        },
+        {
+          "name": "SSEParser",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": false,
+          "kind": "class"
+        }
+      ],
+      "functions": [],
+      "classes": [
+        "file:spindles-proxy/src/sse/sseParser.ts:class:SSEParser:8"
+      ],
+      "topLevelReferences": []
+    },
+    "file:spindles-proxy/src/sse/sseParser.ts:class:SSEParser:8:method:feed:18": {
+      "id": "file:spindles-proxy/src/sse/sseParser.ts:class:SSEParser:8:method:feed:18",
+      "type": "function",
+      "name": "feed",
+      "filePath": "spindles-proxy/src/sse/sseParser.ts",
+      "line": 18,
+      "endLine": 21,
+      "parentFileId": "file:spindles-proxy/src/sse/sseParser.ts",
+      "parentClassId": "file:spindles-proxy/src/sse/sseParser.ts:class:SSEParser:8",
+      "params": [
+        {
+          "name": "chunk",
+          "type": "string",
+          "isOptional": false,
+          "defaultValue": null
+        }
+      ],
+      "returnType": "void",
+      "isExported": false,
+      "isAsync": false,
+      "behavioral": null,
+      "source": "feed(chunk: string): void {\n    this.buffer += chunk;\n    this.processBuffer();\n  }",
+      "references": []
+    },
+    "file:spindles-proxy/src/sse/sseParser.ts:class:SSEParser:8:method:processBuffer:23": {
+      "id": "file:spindles-proxy/src/sse/sseParser.ts:class:SSEParser:8:method:processBuffer:23",
+      "type": "function",
+      "name": "processBuffer",
+      "filePath": "spindles-proxy/src/sse/sseParser.ts",
+      "line": 23,
+      "endLine": 31,
+      "parentFileId": "file:spindles-proxy/src/sse/sseParser.ts",
+      "parentClassId": "file:spindles-proxy/src/sse/sseParser.ts:class:SSEParser:8",
+      "params": [],
+      "returnType": "void",
+      "isExported": false,
+      "isAsync": false,
+      "behavioral": null,
+      "source": "private processBuffer(): void {\n    let newlineIndex: number;\n    \n    while ((newlineIndex = this.buffer.indexOf('\\n')) !== -1) {\n      const line = this.buffer.slice(0, newlineIndex).replace(/\\r$/, '');\n      this.buffer = this.buffer.slice(newlineIndex + 1);\n      this.processLine(line);\n    }\n  }",
+      "references": [
+        "newlineIndex",
+        "line"
+      ]
+    },
+    "file:spindles-proxy/src/sse/sseParser.ts:class:SSEParser:8:method:processLine:33": {
+      "id": "file:spindles-proxy/src/sse/sseParser.ts:class:SSEParser:8:method:processLine:33",
+      "type": "function",
+      "name": "processLine",
+      "filePath": "spindles-proxy/src/sse/sseParser.ts",
+      "line": 33,
+      "endLine": 66,
+      "parentFileId": "file:spindles-proxy/src/sse/sseParser.ts",
+      "parentClassId": "file:spindles-proxy/src/sse/sseParser.ts:class:SSEParser:8",
+      "params": [
+        {
+          "name": "line",
+          "type": "string",
+          "isOptional": false,
+          "defaultValue": null
+        }
+      ],
+      "returnType": "void",
+      "isExported": false,
+      "isAsync": false,
+      "behavioral": null,
+      "source": "private processLine(line: string): void {\n    if (line === '') {\n      this.dispatch();\n      return;\n    }\n\n    if (line.startsWith(':')) {\n      return;\n    }\n\n    const colonIndex = line.indexOf(':');\n    let field: string;\n    let value: string;\n\n    if (colonIndex === -1) {\n      field = line;\n      value = '';\n    } else {\n      field = line.slice(0, colonIndex);\n      value = line.slice(colonIndex + 1);\n      if (value.startsWith(' ')) {\n        value = value.slice(1);\n      }\n    }\n\n    switch (field) {\n      case 'event':\n        this.currentEvent = value;\n        break;\n      case 'data':\n        this.currentData.push(value);\n        break;\n    }\n  }",
+      "references": [
+        "colonIndex",
+        "field",
+        "value"
+      ]
+    },
+    "file:spindles-proxy/src/sse/sseParser.ts:class:SSEParser:8:method:dispatch:68": {
+      "id": "file:spindles-proxy/src/sse/sseParser.ts:class:SSEParser:8:method:dispatch:68",
+      "type": "function",
+      "name": "dispatch",
+      "filePath": "spindles-proxy/src/sse/sseParser.ts",
+      "line": 68,
+      "endLine": 87,
+      "parentFileId": "file:spindles-proxy/src/sse/sseParser.ts",
+      "parentClassId": "file:spindles-proxy/src/sse/sseParser.ts:class:SSEParser:8",
+      "params": [],
+      "returnType": "void",
+      "isExported": false,
+      "isAsync": false,
+      "behavioral": null,
+      "source": "private dispatch(): void {\n    if (this.currentData.length === 0) {\n      this.reset();\n      return;\n    }\n\n    const data = this.currentData.join('\\n');\n    \n    if (data === '[DONE]') {\n      this.reset();\n      return;\n    }\n\n    this.onEvent({\n      event: this.currentEvent,\n      data,\n    });\n\n    this.reset();\n  }",
+      "references": [
+        "data"
+      ]
+    },
+    "file:spindles-proxy/src/sse/sseParser.ts:class:SSEParser:8:method:reset:89": {
+      "id": "file:spindles-proxy/src/sse/sseParser.ts:class:SSEParser:8:method:reset:89",
+      "type": "function",
+      "name": "reset",
+      "filePath": "spindles-proxy/src/sse/sseParser.ts",
+      "line": 89,
+      "endLine": 92,
+      "parentFileId": "file:spindles-proxy/src/sse/sseParser.ts",
+      "parentClassId": "file:spindles-proxy/src/sse/sseParser.ts:class:SSEParser:8",
+      "params": [],
+      "returnType": "void",
+      "isExported": false,
+      "isAsync": false,
+      "behavioral": null,
+      "source": "private reset(): void {\n    this.currentEvent = undefined;\n    this.currentData = [];\n  }",
+      "references": []
+    },
+    "file:spindles-proxy/src/sse/sseParser.ts:class:SSEParser:8:method:flush:94": {
+      "id": "file:spindles-proxy/src/sse/sseParser.ts:class:SSEParser:8:method:flush:94",
+      "type": "function",
+      "name": "flush",
+      "filePath": "spindles-proxy/src/sse/sseParser.ts",
+      "line": 94,
+      "endLine": 100,
+      "parentFileId": "file:spindles-proxy/src/sse/sseParser.ts",
+      "parentClassId": "file:spindles-proxy/src/sse/sseParser.ts:class:SSEParser:8",
+      "params": [],
+      "returnType": "void",
+      "isExported": false,
+      "isAsync": false,
+      "behavioral": null,
+      "source": "flush(): void {\n    if (this.buffer.length > 0) {\n      this.processLine(this.buffer);\n      this.buffer = '';\n    }\n    this.dispatch();\n  }",
+      "references": []
+    },
+    "file:spindles-proxy/src/sse/sseParser.ts:class:SSEParser:8": {
+      "id": "file:spindles-proxy/src/sse/sseParser.ts:class:SSEParser:8",
+      "type": "class",
+      "name": "SSEParser",
+      "filePath": "spindles-proxy/src/sse/sseParser.ts",
+      "line": 8,
+      "endLine": 101,
+      "parentFileId": "file:spindles-proxy/src/sse/sseParser.ts",
+      "methods": [
+        "file:spindles-proxy/src/sse/sseParser.ts:class:SSEParser:8:method:feed:18",
+        "file:spindles-proxy/src/sse/sseParser.ts:class:SSEParser:8:method:processBuffer:23",
+        "file:spindles-proxy/src/sse/sseParser.ts:class:SSEParser:8:method:processLine:33",
+        "file:spindles-proxy/src/sse/sseParser.ts:class:SSEParser:8:method:dispatch:68",
+        "file:spindles-proxy/src/sse/sseParser.ts:class:SSEParser:8:method:reset:89",
+        "file:spindles-proxy/src/sse/sseParser.ts:class:SSEParser:8:method:flush:94"
+      ],
+      "properties": [
+        {
+          "name": "buffer",
+          "type": "string",
+          "visibility": "private",
+          "isStatic": false,
+          "isReadonly": false
+        },
+        {
+          "name": "currentEvent",
+          "type": "string",
+          "visibility": "private",
+          "isStatic": false,
+          "isReadonly": false
+        },
+        {
+          "name": "currentData",
+          "type": "string[]",
+          "visibility": "private",
+          "isStatic": false,
+          "isReadonly": false
+        },
+        {
+          "name": "onEvent",
+          "type": "import(\"/home/ridgetop/projects/forge/spindles-proxy/src/sse/sseParser\").SSEEventCallback",
+          "visibility": "private",
+          "isStatic": false,
+          "isReadonly": false
+        }
+      ],
+      "isExported": true,
+      "extends": null,
+      "implements": []
+    },
+    "file:spindles-proxy/src/types/activity.ts": {
+      "id": "file:spindles-proxy/src/types/activity.ts",
+      "type": "file",
+      "name": "activity.ts",
+      "filePath": "spindles-proxy/src/types/activity.ts",
+      "line": 1,
+      "endLine": 56,
+      "imports": [],
+      "exports": [
+        {
+          "name": "SirkSession",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "interface"
+        },
+        {
+          "name": "BaseActivity",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "interface"
+        },
+        {
+          "name": "ThinkingActivity",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "interface"
+        },
+        {
+          "name": "ToolCallActivity",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "interface"
+        },
+        {
+          "name": "ToolResultActivity",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "interface"
+        },
+        {
+          "name": "TextActivity",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "interface"
+        },
+        {
+          "name": "ErrorActivity",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "interface"
+        },
+        {
+          "name": "ActivityConnectionAck",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "interface"
+        },
+        {
+          "name": "ActivityMessage",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "type"
+        },
+        {
+          "name": "WebSocketMessage",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "type"
+        }
+      ],
+      "functions": [],
+      "classes": [],
+      "topLevelReferences": []
+    },
+    "file:spindles-proxy/src/types/anthropic.ts": {
+      "id": "file:spindles-proxy/src/types/anthropic.ts",
+      "type": "file",
+      "name": "anthropic.ts",
+      "filePath": "spindles-proxy/src/types/anthropic.ts",
+      "line": 1,
+      "endLine": 63,
+      "imports": [],
+      "exports": [
+        {
+          "name": "MessageStart",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "interface"
+        },
+        {
+          "name": "ContentBlockStart",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "interface"
+        },
+        {
+          "name": "ContentBlockDelta",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "interface"
+        },
+        {
+          "name": "ContentBlockStop",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "interface"
+        },
+        {
+          "name": "MessageDelta",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "interface"
+        },
+        {
+          "name": "MessageStop",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "interface"
+        },
+        {
+          "name": "Ping",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "interface"
+        },
+        {
+          "name": "StreamError",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "interface"
+        },
+        {
+          "name": "AnthropicSSEEvent",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "type"
+        }
+      ],
+      "functions": [],
+      "classes": [],
+      "topLevelReferences": []
+    },
+    "file:spindles-proxy/src/types/index.ts": {
+      "id": "file:spindles-proxy/src/types/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "spindles-proxy/src/types/index.ts",
+      "line": 1,
+      "endLine": 3,
+      "imports": [],
+      "exports": [
+        {
+          "name": "SirkSession",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "interface"
+        },
+        {
+          "name": "BaseActivity",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "interface"
+        },
+        {
+          "name": "ThinkingActivity",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "interface"
+        },
+        {
+          "name": "ToolCallActivity",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "interface"
+        },
+        {
+          "name": "ToolResultActivity",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "interface"
+        },
+        {
+          "name": "TextActivity",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "interface"
+        },
+        {
+          "name": "ErrorActivity",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "interface"
+        },
+        {
+          "name": "ActivityConnectionAck",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "interface"
+        },
+        {
+          "name": "ActivityMessage",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "type"
+        },
+        {
+          "name": "WebSocketMessage",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "type"
+        },
+        {
+          "name": "MessageStart",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "interface"
+        },
+        {
+          "name": "ContentBlockStart",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "interface"
+        },
+        {
+          "name": "ContentBlockDelta",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "interface"
+        },
+        {
+          "name": "ContentBlockStop",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "interface"
+        },
+        {
+          "name": "MessageDelta",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "interface"
+        },
+        {
+          "name": "MessageStop",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "interface"
+        },
+        {
+          "name": "Ping",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "interface"
+        },
+        {
+          "name": "StreamError",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "interface"
+        },
+        {
+          "name": "AnthropicSSEEvent",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": true,
+          "kind": "type"
+        },
+        {
+          "name": "*",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": false,
+          "kind": "reexport",
+          "source": "./activity.js"
+        },
+        {
+          "name": "*",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": false,
+          "kind": "reexport",
+          "source": "./anthropic.js"
+        }
+      ],
+      "functions": [],
+      "classes": [],
+      "topLevelReferences": []
+    },
+    "file:spindles-proxy/src/ws/broadcastHub.ts": {
+      "id": "file:spindles-proxy/src/ws/broadcastHub.ts",
+      "type": "file",
+      "name": "broadcastHub.ts",
+      "filePath": "spindles-proxy/src/ws/broadcastHub.ts",
+      "line": 1,
+      "endLine": 62,
+      "imports": [
+        {
+          "source": "ws",
+          "items": [
+            {
+              "name": "WebSocket",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": true
+        },
+        {
+          "source": "../types/activity.js",
+          "items": [
+            {
+              "name": "WebSocketMessage",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": true
+        }
+      ],
+      "exports": [
+        {
+          "name": "broadcastHub",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": false,
+          "kind": "variable"
+        }
+      ],
+      "functions": [],
+      "classes": [
+        "file:spindles-proxy/src/ws/broadcastHub.ts:class:BroadcastHub:6"
+      ],
+      "topLevelReferences": [
+        "BroadcastHub"
+      ]
+    },
+    "file:spindles-proxy/src/ws/broadcastHub.ts:class:BroadcastHub:6:method:add:9": {
+      "id": "file:spindles-proxy/src/ws/broadcastHub.ts:class:BroadcastHub:6:method:add:9",
+      "type": "function",
+      "name": "add",
+      "filePath": "spindles-proxy/src/ws/broadcastHub.ts",
+      "line": 9,
+      "endLine": 28,
+      "parentFileId": "file:spindles-proxy/src/ws/broadcastHub.ts",
+      "parentClassId": "file:spindles-proxy/src/ws/broadcastHub.ts:class:BroadcastHub:6",
+      "params": [
+        {
+          "name": "ws",
+          "type": "import(\"/home/ridgetop/projects/forge/spindles-proxy/node_modules/.pnpm/@types+ws@8.18.1/node_modules/@types/ws/index\").WebSocket",
+          "isOptional": false,
+          "defaultValue": null
+        }
+      ],
+      "returnType": "void",
+      "isExported": false,
+      "isAsync": false,
+      "behavioral": null,
+      "source": "add(ws: WebSocket): void {\n    this.clients.add(ws);\n    console.log(`[ws] Client connected (${this.clients.size} total)`);\n\n    const ack: WebSocketMessage = {\n      type: 'connection_ack',\n      timestamp: new Date().toISOString(),\n    };\n    ws.send(JSON.stringify(ack));\n\n    ws.on('close', () => {\n      this.clients.delete(ws);\n      console.log(`[ws] Client disconnected (${this.clients.size} total)`);\n    });\n\n    ws.on('error', (err) => {\n      console.error('[ws] Client error:', err);\n      this.clients.delete(ws);\n    });\n  }",
+      "references": [
+        "console",
+        "Date",
+        "JSON",
+        "ack",
+        "err"
+      ]
+    },
+    "file:spindles-proxy/src/ws/broadcastHub.ts:class:BroadcastHub:6:method:broadcast:30": {
+      "id": "file:spindles-proxy/src/ws/broadcastHub.ts:class:BroadcastHub:6:method:broadcast:30",
+      "type": "function",
+      "name": "broadcast",
+      "filePath": "spindles-proxy/src/ws/broadcastHub.ts",
+      "line": 30,
+      "endLine": 47,
+      "parentFileId": "file:spindles-proxy/src/ws/broadcastHub.ts",
+      "parentClassId": "file:spindles-proxy/src/ws/broadcastHub.ts:class:BroadcastHub:6",
+      "params": [
+        {
+          "name": "message",
+          "type": "import(\"/home/ridgetop/projects/forge/spindles-proxy/src/types/activity\").WebSocketMessage",
+          "isOptional": false,
+          "defaultValue": null
+        }
+      ],
+      "returnType": "void",
+      "isExported": false,
+      "isAsync": false,
+      "behavioral": null,
+      "source": "broadcast(message: WebSocketMessage): void {\n    const json = JSON.stringify(message);\n\n    for (const client of this.clients) {\n      if (client.readyState !== 1) { // 1 = OPEN\n        continue;\n      }\n\n      if (client.bufferedAmount > MAX_BUFFERED_AMOUNT) {\n        console.warn('[ws] Dropping slow client due to backpressure');\n        client.close(1008, 'Backpressure limit exceeded');\n        this.clients.delete(client);\n        continue;\n      }\n\n      client.send(json);\n    }\n  }",
+      "references": [
+        "JSON",
+        "client",
+        "MAX_BUFFERED_AMOUNT",
+        "console",
+        "json"
+      ]
+    },
+    "file:spindles-proxy/src/ws/broadcastHub.ts:class:BroadcastHub:6:method:close:53": {
+      "id": "file:spindles-proxy/src/ws/broadcastHub.ts:class:BroadcastHub:6:method:close:53",
+      "type": "function",
+      "name": "close",
+      "filePath": "spindles-proxy/src/ws/broadcastHub.ts",
+      "line": 53,
+      "endLine": 58,
+      "parentFileId": "file:spindles-proxy/src/ws/broadcastHub.ts",
+      "parentClassId": "file:spindles-proxy/src/ws/broadcastHub.ts:class:BroadcastHub:6",
+      "params": [],
+      "returnType": "void",
+      "isExported": false,
+      "isAsync": false,
+      "behavioral": null,
+      "source": "close(): void {\n    for (const client of this.clients) {\n      client.close(1001, 'Server shutting down');\n    }\n    this.clients.clear();\n  }",
+      "references": [
+        "client"
+      ]
+    },
+    "file:spindles-proxy/src/ws/broadcastHub.ts:class:BroadcastHub:6": {
+      "id": "file:spindles-proxy/src/ws/broadcastHub.ts:class:BroadcastHub:6",
+      "type": "class",
+      "name": "BroadcastHub",
+      "filePath": "spindles-proxy/src/ws/broadcastHub.ts",
+      "line": 6,
+      "endLine": 59,
+      "parentFileId": "file:spindles-proxy/src/ws/broadcastHub.ts",
+      "methods": [
+        "file:spindles-proxy/src/ws/broadcastHub.ts:class:BroadcastHub:6:method:add:9",
+        "file:spindles-proxy/src/ws/broadcastHub.ts:class:BroadcastHub:6:method:broadcast:30",
+        "file:spindles-proxy/src/ws/broadcastHub.ts:class:BroadcastHub:6:method:close:53"
+      ],
+      "properties": [
+        {
+          "name": "clients",
+          "type": "Set<import(\"/home/ridgetop/projects/forge/spindles-proxy/node_modules/.pnpm/@types+ws@8.18.1/node_modules/@types/ws/index\").WebSocket>",
+          "visibility": "private",
+          "isStatic": false,
+          "isReadonly": false
+        }
+      ],
+      "isExported": false,
+      "extends": null,
+      "implements": []
+    },
+    "file:spindles-proxy/src/ws/index.ts": {
+      "id": "file:spindles-proxy/src/ws/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "spindles-proxy/src/ws/index.ts",
+      "line": 1,
+      "endLine": 3,
+      "imports": [],
+      "exports": [
+        {
+          "name": "createWebSocketServer",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": false,
+          "kind": "function"
+        },
+        {
+          "name": "broadcastHub",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": false,
+          "kind": "variable"
+        },
+        {
+          "name": "createWebSocketServer",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": false,
+          "kind": "reexport",
+          "source": "./wsServer.js"
+        },
+        {
+          "name": "broadcastHub",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": false,
+          "kind": "reexport",
+          "source": "./broadcastHub.js"
+        }
+      ],
+      "functions": [],
+      "classes": [],
+      "topLevelReferences": []
+    },
+    "file:spindles-proxy/src/ws/wsServer.ts": {
+      "id": "file:spindles-proxy/src/ws/wsServer.ts",
+      "type": "file",
+      "name": "wsServer.ts",
+      "filePath": "spindles-proxy/src/ws/wsServer.ts",
+      "line": 1,
+      "endLine": 22,
+      "imports": [
+        {
+          "source": "ws",
+          "items": [
+            {
+              "name": "WebSocketServer",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": false
+        },
+        {
+          "source": "../config.js",
+          "items": [
+            {
+              "name": "config",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": false
+        },
+        {
+          "source": "./broadcastHub.js",
+          "items": [
+            {
+              "name": "broadcastHub",
+              "alias": null,
+              "isDefault": false,
+              "isNamespace": false
+            }
+          ],
+          "isTypeOnly": false
+        }
+      ],
+      "exports": [
+        {
+          "name": "createWebSocketServer",
+          "alias": null,
+          "isDefault": false,
+          "isTypeOnly": false,
+          "kind": "function"
+        }
+      ],
+      "functions": [
+        "file:spindles-proxy/src/ws/wsServer.ts:fn:createWebSocketServer:5"
+      ],
+      "classes": [],
+      "topLevelReferences": []
+    },
+    "file:spindles-proxy/src/ws/wsServer.ts:fn:createWebSocketServer:5": {
+      "id": "file:spindles-proxy/src/ws/wsServer.ts:fn:createWebSocketServer:5",
+      "type": "function",
+      "name": "createWebSocketServer",
+      "filePath": "/home/ridgetop/projects/forge/spindles-proxy/src/ws/wsServer.ts",
+      "line": 5,
+      "endLine": 21,
+      "parentFileId": "file:spindles-proxy/src/ws/wsServer.ts",
+      "parentClassId": null,
+      "params": [],
+      "returnType": "import(\"/home/ridgetop/projects/forge/spindles-proxy/node_modules/.pnpm/@types+ws@8.18.1/node_modules/@types/ws/index\").WebSocketServer",
+      "isExported": true,
+      "isAsync": false,
+      "behavioral": {
+        "summary": "Creates a WebSocketServer instance, configures event handlers, and starts listening on a port.",
+        "source": "ai",
+        "analyzedAt": "2026-01-18T13:33:10.014Z",
+        "flags": {
+          "databaseRead": false,
+          "databaseWrite": false,
+          "httpCall": false,
+          "fileRead": false,
+          "fileWrite": false,
+          "sendsNotification": false,
+          "modifiesGlobalState": true,
+          "hasSideEffects": true
+        }
+      },
+      "source": "export function createWebSocketServer(): WebSocketServer {\n  const wss = new WebSocketServer({ port: config.wsPort, path: config.wsPath });\n\n  wss.on('listening', () => {\n    console.log(`[spindles-proxy] WebSocket server listening on port ${config.wsPort}${config.wsPath}`);\n  });\n\n  wss.on('connection', (ws) => {\n    broadcastHub.add(ws);\n  });\n\n  wss.on('error', (err) => {\n    console.error('[ws] Server error:', err);\n  });\n\n  return wss;\n}",
+      "references": [
+        "WebSocketServer",
+        "config",
+        "wss",
+        "console",
+        "broadcastHub",
+        "ws",
+        "err"
+      ]
+    }
+  },
+  "connections": [],
+  "warnings": [
+    {
+      "id": "a370a646-e72f-47cb-9938-e881ae75d718",
+      "category": "unused_export",
+      "level": "info",
+      "title": "Unused export: ForgeConfigSchema",
+      "description": "The export \"ForgeConfigSchema\" in src/config.ts is not imported anywhere in the project. It may be dead code or intended for external use.",
+      "affectedNodes": [
+        "file:src/config.ts"
+      ],
+      "suggestion": {
+        "summary": "Remove export if unused, or document if public API",
+        "reasoning": "Unused exports can indicate dead code. If this is part of a public API, consider documenting it.",
+        "codeExample": null,
+        "autoFixable": false
+      },
+      "detectedAt": "2026-01-18T13:32:59.592Z"
+    },
+    {
+      "id": "23239d89-1505-4e81-b89f-56ac1e402e68",
+      "category": "unused_export",
+      "level": "info",
+      "title": "Unused export: isPauseRequested",
+      "description": "The export \"isPauseRequested\" in src/orchestrator/resumeFlow.ts is not imported anywhere in the project. It may be dead code or intended for external use.",
+      "affectedNodes": [
+        "file:src/orchestrator/resumeFlow.ts"
+      ],
+      "suggestion": {
+        "summary": "Remove export if unused, or document if public API",
+        "reasoning": "Unused exports can indicate dead code. If this is part of a public API, consider documenting it.",
+        "codeExample": null,
+        "autoFixable": false
+      },
+      "detectedAt": "2026-01-18T13:32:59.592Z"
+    },
+    {
+      "id": "f42934a6-5251-42fc-bcd3-ff2a9c07c3d1",
+      "category": "unused_export",
+      "level": "info",
+      "title": "Unused export: pauseRun",
+      "description": "The export \"pauseRun\" in src/orchestrator/resumeFlow.ts is not imported anywhere in the project. It may be dead code or intended for external use.",
+      "affectedNodes": [
+        "file:src/orchestrator/resumeFlow.ts"
+      ],
+      "suggestion": {
+        "summary": "Remove export if unused, or document if public API",
+        "reasoning": "Unused exports can indicate dead code. If this is part of a public API, consider documenting it.",
+        "codeExample": null,
+        "autoFixable": false
+      },
+      "detectedAt": "2026-01-18T13:32:59.592Z"
+    },
+    {
+      "id": "46e43986-276a-489c-b84f-33f150c71ee7",
+      "category": "unused_export",
+      "level": "info",
+      "title": "Unused export: resumeRun",
+      "description": "The export \"resumeRun\" in src/orchestrator/resumeFlow.ts is not imported anywhere in the project. It may be dead code or intended for external use.",
+      "affectedNodes": [
+        "file:src/orchestrator/resumeFlow.ts"
+      ],
+      "suggestion": {
+        "summary": "Remove export if unused, or document if public API",
+        "reasoning": "Unused exports can indicate dead code. If this is part of a public API, consider documenting it.",
+        "codeExample": null,
+        "autoFixable": false
+      },
+      "detectedAt": "2026-01-18T13:32:59.592Z"
+    },
+    {
+      "id": "89602e3b-fa25-42c8-9504-13c1d39cc284",
+      "category": "unused_export",
+      "level": "info",
+      "title": "Unused export: createProxyApp",
+      "description": "The export \"createProxyApp\" in spindles-proxy/src/proxy/proxyServer.ts is not imported anywhere in the project. It may be dead code or intended for external use.",
+      "affectedNodes": [
+        "file:spindles-proxy/src/proxy/proxyServer.ts"
+      ],
+      "suggestion": {
+        "summary": "Remove export if unused, or document if public API",
+        "reasoning": "Unused exports can indicate dead code. If this is part of a public API, consider documenting it.",
+        "codeExample": null,
+        "autoFixable": false
+      },
+      "detectedAt": "2026-01-18T13:32:59.592Z"
+    }
+  ],
+  "clusters": [],
+  "errors": []
+}

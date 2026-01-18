@@ -1,4 +1,3 @@
-import { readFileSync } from 'fs';
 import type { ForgeConfig } from '../config.js';
 
 const PROMPT_TEMPLATE = `You are instance {n} of {total} in run "{runName}".
@@ -20,24 +19,16 @@ Example - get recent contexts:
 ssh hetzner 'curl -s -X POST http://localhost:8080/mcp/tools/context_get_recent -H "Content-Type: application/json" -d '\\''{\"arguments\": {}}'\\'''
 \`\`\`
 
-## Your Task (from seed document)
-{seedContent}
+## Your Task
+Read your task instructions from the seed document at: {seedPath}
 
----
-Complete your task as described above. Remember to store your work to Mandrel.`;
+After reading, complete the task and store your work to Mandrel.`;
 
 export function renderPrompt(config: ForgeConfig, instanceNumber: number): string {
-  let seedContent: string;
-  try {
-    seedContent = readFileSync(config.seedPath, 'utf-8');
-  } catch (err) {
-    seedContent = `[ERROR: Could not read seed file at ${config.seedPath}: ${err}]`;
-  }
-
   return PROMPT_TEMPLATE
     .replace('{n}', String(instanceNumber))
     .replace('{total}', String(config.totalInstances))
     .replace('{runName}', config.runName)
     .replace('{project}', config.project)
-    .replace('{seedContent}', seedContent);
+    .replace('{seedPath}', config.seedPath);
 }
