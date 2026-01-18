@@ -22,11 +22,13 @@ export async function anthropicProxyRoute(req: Request, res: Response, _next: Ne
       }
     }
 
-    const bodyChunks: Buffer[] = [];
-    for await (const chunk of req) {
-      bodyChunks.push(chunk);
-    }
-    const body = Buffer.concat(bodyChunks);
+    // Read body using event-based approach (more reliable than async iteration)
+    const body = await new Promise<Buffer>((resolve, reject) => {
+      const chunks: Buffer[] = [];
+      req.on('data', (chunk: Buffer) => chunks.push(chunk));
+      req.on('end', () => resolve(Buffer.concat(chunks)));
+      req.on('error', reject);
+    });
 
     const session = sessionStore.snapshot();
     const toolResults = extractToolResults(body, session);
@@ -38,7 +40,7 @@ export async function anthropicProxyRoute(req: Request, res: Response, _next: Ne
     const fetchResponse = await fetch(targetUrl, {
       method: req.method,
       headers,
-      body: ['GET', 'HEAD'].includes(req.method) ? undefined : body,
+      body: ['GET', 'HEAD'].includes(req.method) ? undefined : new Uint8Array(body),
     });
 
     res.status(fetchResponse.status);

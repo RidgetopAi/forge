@@ -4,7 +4,8 @@ import type { SirkSession } from '../types/activity.js';
 
 export const sessionRouter: RouterType = Router();
 
-sessionRouter.use((req, res, next) => {
+// Only parse body for /sirk/* routes, not for proxy routes
+sessionRouter.use('/sirk/*', (req, res, next) => {
   if (req.method === 'POST' || req.method === 'PUT') {
     let body = '';
     req.on('data', (chunk) => (body += chunk));
