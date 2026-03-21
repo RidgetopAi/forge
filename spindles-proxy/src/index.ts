@@ -8,11 +8,28 @@ import { jsonlWriter } from './logging/index.js';
 const app = express();
 
 app.get('/health', (_req, res) => {
-  res.json({ 
-    status: 'ok', 
+  res.json({
+    status: 'ok',
     timestamp: new Date().toISOString(),
     wsClients: broadcastHub.clientCount,
   });
+});
+
+// Test endpoint to inject a message into the broadcast stream
+app.post('/test-broadcast', express.json(), (req, res) => {
+  const testMsg = req.body.message || {
+    type: 'text',
+    content: '🧪 TEST MESSAGE - If you see this, the stream is working!',
+    timestamp: new Date().toISOString(),
+    session: {
+      runName: 'test-broadcast',
+      instanceNumber: 99,
+      totalInstances: 99,
+      project: 'test'
+    }
+  };
+  broadcastHub.broadcast(testMsg);
+  res.json({ success: true, broadcast: testMsg, clients: broadcastHub.clientCount });
 });
 
 app.use(sessionRouter);

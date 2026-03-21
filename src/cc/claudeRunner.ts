@@ -9,6 +9,8 @@ export interface RunResult {
 export interface ClaudeRunnerConfig {
   spindlesProxyUrl: string;
   mandrelUrl: string;
+  model: string;
+  thinkingEffort: string;
 }
 
 export class ClaudeRunner {
@@ -29,12 +31,14 @@ export class ClaudeRunner {
 
       const env = {
         ...process.env,
-        ANTHROPIC_BASE_URL: this.config.spindlesProxyUrl
+        ANTHROPIC_BASE_URL: this.config.spindlesProxyUrl,
+        CLAUDE_CODE_EFFORT_LEVEL: this.config.thinkingEffort
       };
 
       const child: ChildProcess = spawn('claude', [
         '--print',
         '--dangerously-skip-permissions',
+        '--model', this.config.model,
         prompt
       ], {
         env,

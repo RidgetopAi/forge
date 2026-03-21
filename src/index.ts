@@ -82,9 +82,14 @@ async function main(): Promise<void> {
   const stateManager = new StateManager(config.runName, config.totalInstances);
   setStateManager(stateManager);
   
-  const existingState = await stateManager.load();
-  if (existingState) {
-    console.error(`[forge] Found existing state: ${existingState.status}, instance ${existingState.currentInstance}/${existingState.totalInstances}`);
+  if (config.resume) {
+    const existingState = await stateManager.load();
+    if (existingState) {
+      console.error(`[forge] Resuming from state: ${existingState.status}, instance ${existingState.currentInstance}/${existingState.totalInstances}`);
+    }
+  } else {
+    await stateManager.clean();
+    console.error('[forge] Fresh start (state cleaned)');
   }
   
   await stateManager.save();

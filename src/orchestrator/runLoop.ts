@@ -19,7 +19,9 @@ export async function runLoop(
   const spindlesClient = new SpindlesClient(config.spindlesProxyUrl);
   const claudeRunner = new ClaudeRunner({
     spindlesProxyUrl: config.spindlesProxyUrl,
-    mandrelUrl: config.mandrelUrl
+    mandrelUrl: config.mandrelUrl,
+    model: config.model,
+    thinkingEffort: config.thinkingEffort
   });
   const timeoutMs = config.timeoutMinutes * 60 * 1000;
   
@@ -64,23 +66,9 @@ export async function runLoop(
     
     const prompt = renderPrompt(config, instanceNumber);
     
-    let success = false;
-    let lastError = '';
-    
-    for (let attempt = 0; attempt < 2; attempt++) {
-      if (attempt > 0) {
-        console.error(`[forge] Retrying instance ${instanceNumber} (attempt ${attempt + 1})`);
-      }
-      
-      const result = await claudeRunner.run(prompt, timeoutMs);
-      
-      if (result.success) {
-        success = true;
-        break;
-      }
-      
-      lastError = result.output || `Exit code: ${result.exitCode}`;
-    }
+    const result = await claudeRunner.run(prompt, timeoutMs);
+    const success = result.success;
+    const lastError = success ? '' : (result.output || `Exit code: ${result.exitCode}`);
     
     const durationMs = Date.now() - startTime;
     

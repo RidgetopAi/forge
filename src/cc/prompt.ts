@@ -1,6 +1,6 @@
 import type { ForgeConfig } from '../config.js';
 
-const PROMPT_TEMPLATE = `You are instance {n} of {total} in run "{runName}".
+const PROMPT_TEMPLATE = `{instanceLine}
 Project: {project}
 
 ## CRITICAL: Mandrel Context Storage (MANDATORY)
@@ -40,7 +40,12 @@ ssh hetzner 'curl -s -X POST http://localhost:8080/mcp/tools/context_get_recent 
 5. End with a handoff context summarizing what you did and what's next`;
 
 export function renderPrompt(config: ForgeConfig, instanceNumber: number): string {
+  const instanceLine = config.selfAssignInstance
+    ? `You are part of run "${config.runName}". Determine your instance number by reading the most recent handoff in Mandrel. If no previous handoff exists, you are i[1]. Otherwise, increment from the last instance.`
+    : `You are instance ${instanceNumber} of ${config.totalInstances} in run "${config.runName}".`;
+
   return PROMPT_TEMPLATE
+    .replaceAll('{instanceLine}', instanceLine)
     .replaceAll('{n}', String(instanceNumber))
     .replaceAll('{total}', String(config.totalInstances))
     .replaceAll('{runName}', config.runName)

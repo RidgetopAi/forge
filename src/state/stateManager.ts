@@ -1,4 +1,4 @@
-import { mkdir, readFile, writeFile, rename } from 'fs/promises';
+import { mkdir, readFile, writeFile, rename, unlink } from 'fs/promises';
 import { dirname, join } from 'path';
 import { homedir } from 'os';
 
@@ -93,5 +93,23 @@ export class StateManager {
     if (this.state) {
       this.state.status = status;
     }
+  }
+
+  async clean(): Promise<void> {
+    try {
+      await unlink(this.stateFilePath);
+    } catch (err) {
+      if ((err as NodeJS.ErrnoException).code !== 'ENOENT') {
+        throw err;
+      }
+    }
+    // Re-initialize fresh state so save() works after clean()
+    this.state = {
+      runName: this.state?.runName ?? '',
+      currentInstance: 1,
+      totalInstances: this.state?.totalInstances ?? 1,
+      completedInstances: [],
+      status: 'running'
+    };
   }
 }

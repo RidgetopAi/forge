@@ -7,7 +7,11 @@ export const ForgeConfigSchema = z.object({
   seedPath: z.string().min(1, 'seedPath is required'),
   spindlesProxyUrl: z.string().url().default('http://localhost:8082'),
   mandrelUrl: z.string().url().default('http://localhost:8080'),
-  timeoutMinutes: z.number().positive().default(30)
+  timeoutMinutes: z.number().positive().default(30),
+  resume: z.boolean().default(false),
+  selfAssignInstance: z.boolean().default(false),
+  model: z.string().default('claude-opus-4-6'),
+  thinkingEffort: z.enum(['low', 'medium', 'high']).default('high')
 });
 
 export type ForgeConfig = z.infer<typeof ForgeConfigSchema>;
